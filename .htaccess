@@ -1,0 +1,66 @@
+<IfModule mod_deflate.c>
+# Compress HTML, CSS, JavaScript, Text, XML and fonts
+AddOutputFilterByType DEFLATE application/javascript
+AddOutputFilterByType DEFLATE application/rss+xml
+AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+AddOutputFilterByType DEFLATE application/x-font
+AddOutputFilterByType DEFLATE application/x-font-opentype
+AddOutputFilterByType DEFLATE application/x-font-otf
+AddOutputFilterByType DEFLATE application/x-font-truetype
+AddOutputFilterByType DEFLATE application/x-font-ttf
+AddOutputFilterByType DEFLATE application/x-javascript
+AddOutputFilterByType DEFLATE application/xhtml+xml
+AddOutputFilterByType DEFLATE application/xml
+AddOutputFilterByType DEFLATE font/opentype
+AddOutputFilterByType DEFLATE font/otf
+AddOutputFilterByType DEFLATE font/ttf
+AddOutputFilterByType DEFLATE image/svg+xml
+AddOutputFilterByType DEFLATE image/x-icon
+AddOutputFilterByType DEFLATE text/css
+AddOutputFilterByType DEFLATE text/html
+AddOutputFilterByType DEFLATE text/javascript
+AddOutputFilterByType DEFLATE text/plain
+AddOutputFilterByType DEFLATE text/xml
+# Remove browser bugs (only needed for really old browsers)
+BrowserMatch ^Mozilla/4 gzip-only-text/html
+BrowserMatch ^Mozilla/4.0[678] no-gzip
+BrowserMatch bMSIE !no-gzip !gzip-only-text/html
+Header append Vary User-Agent
+</IfModule>
+
+RewriteEngine On # Turn on the rewriting engine
+# closed access folder
+Options All -Indexes
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php
+#RewriteRule ^([a-z]+)\/?$ $1.php [NC]
+
+#no akses ext
+IndexIgnore *.gif *.zip *.txt
+
+# closed ext .php
+RewriteCond %{REQUEST_FILENAME} !-d 
+RewriteCond %{REQUEST_FILENAME}\.php -f 
+RewriteRule ^([^/]+)/$ $1.php 
+
+
+# alias
+RewriteRule ^signup?$ signup.php
+RewriteRule ^login?$ index.php [NC,L]
+RewriteRule ^cek-login?$ cek_login.php [NC,L]
+RewriteRule ^page-view$ media [NC,L]
+RewriteRule ^bukti-cuti-1/(.*)$ module/cuti-pegawai/lampiran-cuti.php?id=$1&bc=1 [L]
+RewriteRule ^bukti-cuti-2/(.*)$ module/cuti-pegawai/lampiran-cuti.php?id=$1&bc=2 [L]
+RewriteRule ^rapihkan-haricuti$ module/cuti-pegawai/rapihkan_haricuti.php [L]
+RewriteRule ^imageview/(.*)$ module/cuti-pegawai/imageview.php?id=$1 [L]
+RewriteRule ^cetak-surat-tugas-(.*)$ cetakan/cetak-surat-tugas.php?id=$1 [L]
+RewriteRule ^cetak-surat-cuti-(.*)$ cetakan/cetak-surat-cuti.php?id=$1 [L]
+RewriteRule ^cetak-surat-penolakan-cuti-(.*)$ cetakan/cetak-surat-penolakan-cuti.php?id=$1 [L]
+RewriteRule ^cetak-spj-gaji(.*)$ cetakan/cetak-spj-gaji.php [L]
+RewriteRule ^cetak-lap-absensi(.*)$ cetakan/cetak-lap-absensi.php [L]
+RewriteRule ^cetak-slip-gaji-(.*)$ cetakan/cetak-slip-gaji.php?id=$1 [L]
+RewriteRule ^cetak-slip-gaji1-(.*)$ cetakan/cetak-slip-gaji-all.php?id=$1 [L]
+RewriteRule ^eror404?$ eror.php [L]
+RewriteRule ^api-media?$ api-media.php

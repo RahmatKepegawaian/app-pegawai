@@ -1,0 +1,49 @@
+# Created by https://www.toptal.com/developers/gitignore/api/phpunit,nativescript,database
+# Edit at https://www.toptal.com/developers/gitignore?templates=phpunit,nativescript,database
+
+### Database ###
+*.accdb
+*.db
+*.dbf
+*.mdb
+*.pdb
+*.sqlite3
+*.db-shm
+*.db-wal
+
+### NativeScript ###
+/platforms
+/hooks
+/node_modules
+/lib
+/debugger
+/dist
+/conf/conf.php
+/bukticuti
+
+/app/**/*.map
+# shouldn't ignore this for vanilla nativescript
+# /app/**/*.js
+
+.DS_Store
+**/*.log
+tags
+
+ers.txt
+
+### PHPUnit ###
+# Covers PHPUnit
+# Reference: https://phpunit.de/
+
+# Generated files
+.phpunit.result.cache
+.phpunit.cache
+
+# PHPUnit
+/app/phpunit.xml
+/phpunit.xml
+
+# Build data
+/build/
+
+# End of https://www.toptal.com/developers/gitignore/api/phpunit,nativescript,database

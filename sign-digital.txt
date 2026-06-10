@@ -1,0 +1,19 @@
+Coba ini gan http://makitweb.com/capture-signature-in-the-webpage-with-jquery-plugins/
+ 
+//buat koneksi dengan MySQL
+$link = new mysqli('localhost', 'root', '12345678', 'signature');
+//cek apakah koneksi dengan MySQL berhasil
+ 
+// requires php5
+define('UPLOAD_DIR', 'images/');
+$img = $_POST['img'];
+$img = str_replace('data:image/png;base64,', '', $img);
+$img = str_replace(' ', '+', $img);
+$data = base64_decode($img);
+$file = UPLOAD_DIR . uniqid() . '.jpeg';
+$success = file_put_contents($file, $data);
+print $success ? $file : 'Unable to save the file.';
+ 
+mysqli_query($link ,"INSERT INTO signature (img,base64,status) VALUES('$file','$img',0)");
+ 
+?>

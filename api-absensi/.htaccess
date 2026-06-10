@@ -1,0 +1,27 @@
+RewriteEngine On # Turn on the rewriting engine
+# closed access folder
+Options All -Indexes
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php
+#RewriteRule ^([a-z]+)\/?$ $1.php [NC]
+
+#no akses ext
+IndexIgnore *.gif *.zip *.txt
+
+# closed ext .php
+RewriteCond %{REQUEST_FILENAME} !-d 
+RewriteCond %{REQUEST_FILENAME}\.php -f 
+RewriteRule ^([^/]+)/$ $1.php 
+
+
+# alias
+RewriteRule ^signup?$ signup.php
+RewriteRule ^login?$ index.php [NC,L]
+RewriteRule ^cek-login?$ cek_login.php [NC,L]
+RewriteRule ^page-view$ media [NC,L]
+RewriteRule ^lampiran-cuti$ module/cuti-pegawai/lampiran-cuti.php?id=$1 [L]
+RewriteRule ^cetak-surat-tugas-(.*)$ cetakan/cetak-surat-tugas.php?id=$1 [L]
+RewriteRule ^cetak-surat-cuti-(.*)$ cetakan/cetak-surat-cuti.php?id=$1 [L]
+RewriteRule ^eror404?$ eror.php [L]
