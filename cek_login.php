@@ -4,7 +4,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <title>Sistem Informasi Kepegawaian</title>
-        <link rel="shortcut icon" href="img/icon.png" />
+        <!-- <link rel="shortcut icon" href="img/icon.png" /> -->
         <!-- Tell the browser to be responsive to screen width -->
     </head>
     <body>

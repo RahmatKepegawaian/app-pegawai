@@ -45,7 +45,7 @@ $alert = isset($url['alert']) ? $url['alert'] : null;
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Sistem Informasi Kepegawaian - Login</title>
-    <link rel="shortcut icon" href="img/icon.png" />
+    <!-- <link rel="shortcut icon" href="img/icon.png" /> -->
     <meta name="theme-color" content="#6700DF">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="assets/icons/icon-96x96.png">

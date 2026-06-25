@@ -265,16 +265,17 @@
             </a>
             <ul class="treeview-menu">
                 <li>
+                        <a href="?<?php echo paramEncrypt('module=absensi-pegawai&act=absensi-pegawai-live-jadwal'); ?>">
+                            <i class="fa fa-circle-o"></i>Rekap 1
+                        </a>
+                    </li>
+                <li>
                     <a href="?<?php echo paramEncrypt('module=absensi-pegawai&act=absensi-pegawai'); ?>">
-                        <i class="fa fa-circle-o"></i>Pribadi
+                        <i class="fa fa-circle-o"></i>Rekap 2
                     </a>
                 </li>
                 <?php if ($hak_akses['menu_kepegawaian_absensi'] == '1') { ?>
-                    <li>
-                        <a href="?<?php echo paramEncrypt('module=absensi-pegawai&act=absensi-pegawai-live-jadwal'); ?>">
-                            <i class="fa fa-circle-o"></i>Unit 1
-                        </a>
-                    </li>
+                    
                     <li>
                         <a href="?<?php echo paramEncrypt('module=absensi-pegawai&act=absensi-pegawai-live'); ?>">
                             <i class="fa fa-circle-o"></i>Unit 2
@@ -385,7 +386,7 @@
                             <li><a href="?<?php echo paramEncrypt('module=master-data&act=list-rkk-pegawai-non-pns'); ?>"><i class="fa fa-circle-o"></i> RKK</a></li>
                         </ul>
                     </li>
-                    <li class="treeview">
+                    <!-- <li class="treeview">
                         <a href="#"><i class="fa fa-edit"></i> Form Pegawai
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
@@ -397,7 +398,7 @@
                             <li><a href="?<?php echo paramEncrypt('module=master-data&act=list-master-izin-belajar'); ?>"><i class="fa fa-circle-o"></i> Form Izin Belajar</a></li>
                             <li><a href="?<?php echo paramEncrypt('module=master-data&act=list-master-grade'); ?>"><i class="fa fa-circle-o"></i> Grade Jabatan</a></li>
                         </ul>
-                    </li>
+                    </li> -->
                     <li class="treeview">
                         <a href="#"><i class="fa fa-database"></i> Master Data
                             <span class="pull-right-container">

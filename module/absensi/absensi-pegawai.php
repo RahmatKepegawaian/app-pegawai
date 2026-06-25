@@ -7,13 +7,17 @@ $id_unit_temp = isset($url['id_unit']) ? $url['id_unit'] : null;
 $bulan_temp = isset($url['bulan']) ? $url['bulan'] : null;
 $tahun_temp = isset($url['tahun']) ? $url['tahun'] : null;
 $temp_log_finger = isset($url['log_finger']) ? $url['log_finger'] : null;
+$nip = isset($_SESSION['nip']) ? $_SESSION['nip'] : null;
+$id_user = getOne("select tm_pegawai.id_user from tm_pegawai where nip='$nip'");
+$nama_pegawai = getOne("select tm_pegawai.nama_pegawai from tm_pegawai where nip='$nip'");
+$temp_log_finger = isset($url['log_finger']) ? $url['log_finger'] : null;
 switch ((isset($url['act']) ? $url['act'] : '')) {
     default:
         echo "default";
         header("location:error404");
         break;
     case "absensi-pegawai":
-    ?>
+        ?>
         <div class="box">
             <div class="box">
                 <div class="box-header with-border">
@@ -39,17 +43,20 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <select class="form-control select2" name="bulan" data-placeholder="-Pilih Bulan-" required>
+                                        <select class="form-control select2" name="bulan" data-placeholder="-Pilih Bulan-"
+                                            required>
                                             <?php loadBln('-Pilih Bulan-'); ?>
                                         </select>
                                     </td>
                                     <td>
-                                        <select class="form-control select2" name="tahun" data-placeholder="-Pilih Tahun-" required>
+                                        <select class="form-control select2" name="tahun" data-placeholder="-Pilih Tahun-"
+                                            required>
                                             <?php loadThn('-Pilih Tahun-'); ?>
                                         </select>
                                     </td>
                                     <td>
-                                        <button type="submit" name="search" name="submit" value="submit" class="btn btn-info"><i class="fa fa-search"></i></button>
+                                        <button type="submit" name="search" name="submit" value="submit" class="btn btn-info"><i
+                                                class="fa fa-search"></i></button>
                                     </td>
                                 </tr>
                             </table>
@@ -63,10 +70,12 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
 
                     if ($bulan_post != null && $tahun_post != null) {
 
-                        $bulan_absensi = FormatTgl('Y-m-d', $tahun_post . "-" . $bulan_post . "-01");;
-                    ?>
+                        $bulan_absensi = FormatTgl('Y-m-d', $tahun_post . "-" . $bulan_post . "-01");
+                        ;
+                        ?>
                         <div class="box-header with-border">
-                            <h3 class="box-title fa fa-list"> <label align="center">Laporan Absensi <?php echo konversiBulanTahun($bulan_absensi) . " "; ?></label></h3>
+                            <h3 class="box-title fa fa-list"> <label align="center">Laporan Absensi
+                                    <?php echo konversiBulanTahun($bulan_absensi) . " "; ?></label></h3>
                             <div class="box-tools pull-right"></div>
                         </div>
                         <div class="box-body table-responsive">
@@ -106,13 +115,13 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 </tbody>
                             </table>
                         </div>
-                    <?php
+                        <?php
                     }
                     ?>
                 </div>
             </div>
-        <?php
-        break;
+            <?php
+            break;
     case 'absensi-pegawai-live-jadwal':
         ?>
             <div class="box">
@@ -128,9 +137,9 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                     <div class="form-group">
                         <table align="Left">
                             <tr>
-                                <td>
+                                <!-- <td>
                                     <label>Tanggal</label>
-                                </td>
+                                </td> -->
                                 <td>
                                     <label>Bulan</label>
                                 </td>
@@ -138,16 +147,16 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                     <label>Tahun</label>
                                 </td>
                                 <td></td>
-                                <td>
+                                <!-- <td>
                                     <label>Tanggal</label>
-                                </td>
-                                <td>
+                                </td> -->
+                                <!-- <td>
                                     <label>Bulan</label>
                                 </td>
                                 <td>
                                     <label>Tahun</label>
-                                </td>
-                                <td></td>
+                                </td> -->
+                                <!-- <td></td> -->
                                 <td>
                                     <label>Unit</label>
                                 </td>
@@ -157,26 +166,28 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 <td></td>
                             </tr>
                             <tr>
-                                <td>
+                                <!-- <td>
                                     <select class="form-control select2" id="tanggal_absensi_start" name="tanggal_absensi_start" data-placeholder="-Pilih Tanggal-" required>
-                                        <?php loadTgl('-Pilih Tanggal-'); ?>
+                                        <?php loadTgl(); ?>
                                     </select>
-                                </td>
+                                </td> -->
                                 <td>
-                                    <select class="form-control select2" id="bulan_absensi_start" name="bulan_absensi_start" data-placeholder="-Pilih Bulan-" required>
+                                    <select class="form-control select2" id="bulan_absensi_start" name="bulan_absensi_start"
+                                        data-placeholder="-Pilih Bulan-" required>
                                         <?php loadBln('-Pilih Bulan-'); ?>
                                     </select>
                                 <td>
-                                    <select class="form-control select2" id="tahun_absensi_start" name="tahun_absensi_start" data-placeholder="-Pilih Tahun-" required>
+                                    <select class="form-control select2" id="tahun_absensi_start" name="tahun_absensi_start"
+                                        data-placeholder="-Pilih Tahun-" required>
                                         <?php loadThn('-Pilih Tahun-'); ?>
                                     </select>
                                 </td>
-                                <td>
+                                <!-- <td>
                                     <label>&nbsp;s/d&nbsp;</label>
-                                </td>
-                                <td>
+                                </td> -->
+                                <!-- <td>
                                     <select class="form-control select2" id="tanggal_absensi_end" name="tanggal_absensi_end" data-placeholder="-Pilih Tanggal-" required>
-                                        <?php loadTgl('-Pilih Tanggal-'); ?>
+                                        <?php loadTgl(); ?>
                                     </select>
                                 </td>
                                 <td>
@@ -187,10 +198,12 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                     <select class="form-control select2" id="tahun_absensi_end" name="tahun_absensi_end" data-placeholder="-Pilih Tahun-" onchange="get_list_pegawai_by_idunit();" required>
                                         <?php loadThn('-Pilih Tahun-'); ?>
                                     </select>
-                                </td>
+                                </td> -->
                                 <td>&nbsp;&nbsp;</td>
                                 <td>
-                                    <select class="form-control select2" id="unit_absensi" name="unit_absensi" data-placeholder="-Pilih Unit-" onchange="get_list_pegawai_by_idunit();" required>
+                                    <!-- <select class="form-control select2" id="unit_absensi" name="unit_absensi" data-placeholder="-Pilih Unit-" onchange="get_list_pegawai_by_idunit();" readonly> -->
+                                    <select class="form-control select2" id="unit_absensi" name="unit_absensi"
+                                        data-placeholder="-Pilih Unit-" disabled>
                                         <?php loadUnitByLevel(
                                             $idlevel,
                                             $id_unit,
@@ -200,12 +213,18 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                     </select>
                                 </td>
                                 <td>
-                                    <select class="form-control select2" id="pegawai_absensi" name="pegawai_absensi" data-placeholder="" required>
-                                        <option value="-Pilih Pegawai-" disabled> - Pilih Pegawai - </option>
+                                    <select class="form-control" id="pegawai_absensi" name="pegawai_absensi"
+                                        data-placeholder="">
+                                        <!-- <option value="-Pilih Pegawai-" disabled> - Pilih Pegawai - </option> -->
+                                         <?php
+                                            echo '<option value="' . $id_user . '" selected>' . $nama_pegawai . '</option>';
+                                        ?>
                                     </select>
                                 </td>
                                 <td>
-                                    <button type="button" id="search_absensi_live_jadwal" name="search_absensi_live_jadwal" name="submit" class="btn btn-info" onclick="get_abesnsi_live_jadwal(`#`+this.id);"><i class="fa fa-search"></i></button>
+                                    <button type="button" id="search_absensi_live_jadwal" name="search_absensi_live_jadwal"
+                                        name="submit" class="btn btn-info" onclick="get_abesnsi_live_jadwal(`#`+this.id);"><i
+                                            class="fa fa-search"></i></button>
                                 </td>
                             </tr>
                         </table>
@@ -230,15 +249,16 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             <thead>
                                 <tr>
                                     <th colspan="4">TOTAL</th>
-                                    <th colspan="2" style="background-color: #e48080;" id="absensi_total_telat_pulangcepat"></th>
+                                    <th colspan="2" style="background-color: #e48080;" id="absensi_total_telat_pulangcepat">
+                                    </th>
                                 </tr>
                             </thead>
                         </table>
                     </div>
                 </div>
             </div>
-        <?php
-        break;
+            <?php
+            break;
     case 'absensi-pegawai-live':
         ?>
             <div class="box">
@@ -284,16 +304,19 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             </tr>
                             <tr>
                                 <td>
-                                    <select class="form-control select2" id="tanggal_absensi_start" name="tanggal_absensi_start" data-placeholder="-Pilih Bulan-" required>
+                                    <select class="form-control select2" id="tanggal_absensi_start" name="tanggal_absensi_start"
+                                        data-placeholder="-Pilih Bulan-" required>
                                         <?php loadTgl('-Pilih Tanggal-'); ?>
                                     </select>
                                 </td>
                                 <td>
-                                    <select class="form-control select2" id="bulan_absensi_start" name="bulan_absensi_start" data-placeholder="-Pilih Bulan-" required>
+                                    <select class="form-control select2" id="bulan_absensi_start" name="bulan_absensi_start"
+                                        data-placeholder="-Pilih Bulan-" required>
                                         <?php loadBln('-Pilih Bulan-'); ?>
                                     </select>
                                 <td>
-                                    <select class="form-control select2" id="tahun_absensi_start" name="tahun_absensi_start" data-placeholder="-Pilih Tahun-" required>
+                                    <select class="form-control select2" id="tahun_absensi_start" name="tahun_absensi_start"
+                                        data-placeholder="-Pilih Tahun-" required>
                                         <?php loadThn('-Pilih Tahun-'); ?>
                                     </select>
                                 </td>
@@ -301,22 +324,26 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                     <label>&nbsp;s/d&nbsp;</label>
                                 </td>
                                 <td>
-                                    <select class="form-control select2" id="tanggal_absensi_end" name="tanggal_absensi_end" data-placeholder="-Pilih Tanggal-" required>
+                                    <select class="form-control select2" id="tanggal_absensi_end" name="tanggal_absensi_end"
+                                        data-placeholder="-Pilih Tanggal-" required>
                                         <?php loadTgl('-Pilih Tanggal-'); ?>
                                     </select>
                                 </td>
                                 <td>
-                                    <select class="form-control select2" id="bulan_absensi_end" name="bulan_absensi_end" data-placeholder="-Pilih Bulan-" required>
+                                    <select class="form-control select2" id="bulan_absensi_end" name="bulan_absensi_end"
+                                        data-placeholder="-Pilih Bulan-" required>
                                         <?php loadBln('-Pilih Bulan-'); ?>
                                     </select>
                                 <td>
-                                    <select class="form-control select2" id="tahun_absensi_end" name="tahun_absensi_end" data-placeholder="-Pilih Tahun-" onchange="get_list_pegawai_by_idunit();" required>
+                                    <select class="form-control select2" id="tahun_absensi_end" name="tahun_absensi_end"
+                                        data-placeholder="-Pilih Tahun-" onchange="get_list_pegawai_by_idunit();" required>
                                         <?php loadThn('-Pilih Tahun-'); ?>
                                     </select>
                                 </td>
                                 <td>&nbsp;&nbsp;</td>
                                 <td>
-                                    <select class="form-control select2" id="unit_absensi" name="unit_absensi" data-placeholder="-Pilih Unit-" onchange="get_list_pegawai_by_idunit();" required>
+                                    <select class="form-control select2" id="unit_absensi" name="unit_absensi"
+                                        data-placeholder="-Pilih Unit-" onchange="get_list_pegawai_by_idunit();" required>
                                         <?php loadUnitByLevel(
                                             $idlevel,
                                             $id_unit,
@@ -326,12 +353,16 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                     </select>
                                 </td>
                                 <td>
-                                    <select class="form-control select2" id="pegawai_absensi" name="pegawai_absensi" data-placeholder="" required>
+                                    <select class="form-control select2" id="pegawai_absensi" name="pegawai_absensi"
+                                        data-placeholder="" required>
                                         <option value="-Pilih Pegawai-" disabled> - Pilih Pegawai - </option>
+                                        
                                     </select>
                                 </td>
                                 <td>
-                                    <button type="button" id="search_absensi" name="search_absensi" name="submit" class="btn btn-info" onclick="get_abesnsi_live(`#`+this.id);"><i class="fa fa-search"></i></button>
+                                    <button type="button" id="search_absensi" name="search_absensi" name="submit"
+                                        class="btn btn-info" onclick="get_abesnsi_live(`#`+this.id);"><i
+                                            class="fa fa-search"></i></button>
                                 </td>
                             </tr>
                         </table>
@@ -354,8 +385,8 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                     </div>
                 </div>
             </div>
-        <?php
-        break;
+            <?php
+            break;
     case 'rekap-hasil-absensi-pegawai-by-pj':
         ?>
             <div class="box">
@@ -402,39 +433,46 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                     </tr>
                                     <tr>
                                         <td>
-                                            <select class="form-control select2" name="tanggal_start" data-placeholder="-Pilih Tanggal-" required>
+                                            <select class="form-control select2" name="tanggal_start"
+                                                data-placeholder="-Pilih Tanggal-" required>
                                                 <?= loadTgl(); ?>
                                             </select>
                                         </td>
                                         <td>
-                                            <select class="form-control select2" name="bulan_start" data-placeholder="-Pilih Bulan-" required>
+                                            <select class="form-control select2" name="bulan_start"
+                                                data-placeholder="-Pilih Bulan-" required>
                                                 <?php loadBln('-Pilih Bulan-'); ?>
                                             </select>
                                         </td>
                                         <td>
-                                            <select class="form-control select2" name="tahun_start" data-placeholder="-Pilih Tahun-" required>
+                                            <select class="form-control select2" name="tahun_start"
+                                                data-placeholder="-Pilih Tahun-" required>
                                                 <?php loadThn('-Pilih Tahun-'); ?>
                                             </select>
                                         </td>
                                         <td></td>
                                         <td>
-                                            <select class="form-control select2" name="tanggal_end" data-placeholder="-Pilih Tanggal-" required>
+                                            <select class="form-control select2" name="tanggal_end"
+                                                data-placeholder="-Pilih Tanggal-" required>
                                                 <?= loadTgl(); ?>
                                             </select>
                                         </td>
                                         <td>
-                                            <select class="form-control select2" name="bulan_end" data-placeholder="-Pilih Bulan-" required>
+                                            <select class="form-control select2" name="bulan_end"
+                                                data-placeholder="-Pilih Bulan-" required>
                                                 <?php loadBln('-Pilih Bulan-'); ?>
                                             </select>
                                         </td>
                                         <td>
-                                            <select class="form-control select2" name="tahun_end" data-placeholder="-Pilih Tahun-" required>
+                                            <select class="form-control select2" name="tahun_end"
+                                                data-placeholder="-Pilih Tahun-" required>
                                                 <?php loadThn('-Pilih Tahun-'); ?>
                                             </select>
                                         </td>
                                         <td>&nbsp;</td>
                                         <td>
-                                            <select class="form-control select2" name="id_unit" data-placeholder="-Pilih Unit-" required>
+                                            <select class="form-control select2" name="id_unit" data-placeholder="-Pilih Unit-"
+                                                required>
                                                 <?php loadUnitByLevel(
                                                     $idlevel,
                                                     $id_unit,
@@ -444,7 +482,8 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                             </select>
                                         </td>
                                         <td>
-                                            <button type="submit" name="search" name="submit" value="submit" class="btn btn-info"><i class="fa fa-search"></i></button>
+                                            <button type="submit" name="search" name="submit" value="submit"
+                                                class="btn btn-info"><i class="fa fa-search"></i></button>
                                         </td>
                                     </tr>
                                 </table>
@@ -463,9 +502,11 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
 
                         if ($tanggal_start != null && $bulan_start != null && $tahun_start != null && $tanggal_end != null && $bulan_end != null && $tahun_end != null && $idunit_post != null) {
 
-                        ?>
+                            ?>
                             <div class="box-header with-border">
-                                <h3 class="box-title fa fa-list"> <label align="center">Laporan Absensi <?= $tanggal_start . "-" . $bulan_start . "-" . $tahun_start . " s/d " . $tanggal_end . "-" . $bulan_end . "-" . $tahun_end; ?></label></h3>
+                                <h3 class="box-title fa fa-list"> <label align="center">Laporan Absensi
+                                        <?= $tanggal_start . "-" . $bulan_start . "-" . $tahun_start . " s/d " . $tanggal_end . "-" . $bulan_end . "-" . $tahun_end; ?></label>
+                                </h3>
                                 <div class="box-tools pull-right"></div>
                             </div>
                             <div class="box-body table-responsive">
@@ -560,17 +601,17 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                             $absensi_masuk = !$is_hari_raya && !$libur
                                                 ? $result[$i]['absensi_masuk']
                                                 : '';
-                                            $absensi_pulang = !$is_hari_raya  && !$libur
+                                            $absensi_pulang = !$is_hari_raya && !$libur
                                                 ? $result[$i]['absensi_pulang']
                                                 : '';
-                                            $keterlambatan_hour = !$is_hari_raya  && !$libur
+                                            $keterlambatan_hour = !$is_hari_raya && !$libur
                                                 ? (
                                                     $result[$i]['keterlambatan'] == 0 || $result[$i]['keterlambatan'] < 60 // jika telat 0 atau kurang < 1 jam, telat_hour kosong aja
                                                     ? ''
                                                     : floor(($result[$i]['keterlambatan'] / 60)) . " jam"
                                                 )
                                                 : '';
-                                            $keterlambatan_minutes = !$is_hari_raya  && !$libur
+                                            $keterlambatan_minutes = !$is_hari_raya && !$libur
                                                 ? (
                                                     $result[$i]['keterlambatan'] == 0 // jika telat 0, telat_minutes kosong aja
                                                     ? ''
@@ -618,11 +659,15 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                                 $i_cursor = 1;
 
                                                 // section summary telat dkk
-                                                if ($i != 0) echo "<tr><td style='display: none;'>" . $i . "</td><th></th><th></th><th></th><th></th><th></th><th>" . ($total_telat_hour + floor($total_telat_menit / 60)) . " jam</th><th>" . ceil($total_telat_menit % 60) . " menit</th><th>" . ($total_pulang_cepat_hour + floor($total_pulang_cepat_minutes / 60)) . " jam</th><th>" . ceil($total_pulang_cepat_minutes % 60) . " menit</th><th>" . ($total_durasi_kerja_hour + floor($total_durasi_kerja_minutes / 60)) . " jam</th><th>" . ceil($total_durasi_kerja_minutes % 60) . " menit</th><th></th></tr>";
+                                                if ($i != 0)
+                                                    echo "<tr><td style='display: none;'>" . $i . "</td><th></th><th></th><th></th><th></th><th></th><th>" . ($total_telat_hour + floor($total_telat_menit / 60)) . " jam</th><th>" . ceil($total_telat_menit % 60) . " menit</th><th>" . ($total_pulang_cepat_hour + floor($total_pulang_cepat_minutes / 60)) . " jam</th><th>" . ceil($total_pulang_cepat_minutes % 60) . " menit</th><th>" . ($total_durasi_kerja_hour + floor($total_durasi_kerja_minutes / 60)) . " jam</th><th>" . ceil($total_durasi_kerja_minutes % 60) . " menit</th><th></th></tr>";
                                                 // section biodata
-                                                if ($i != 0) echo "<tr><td style='display: none;'>" . $i . "</td><td colspan='12'>&nbsp;</td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></tr>";
-                                                if ($i != 0) echo "<tr><td style='display: none;'>" . $i . "</td><td colspan='12'>&nbsp;</td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></tr>";
-                                                if ($i != 0) echo "<tr><td style='display: none;'>" . $i . "</td><td colspan='12'>&nbsp;</td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></tr>";
+                                                if ($i != 0)
+                                                    echo "<tr><td style='display: none;'>" . $i . "</td><td colspan='12'>&nbsp;</td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></tr>";
+                                                if ($i != 0)
+                                                    echo "<tr><td style='display: none;'>" . $i . "</td><td colspan='12'>&nbsp;</td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></tr>";
+                                                if ($i != 0)
+                                                    echo "<tr><td style='display: none;'>" . $i . "</td><td colspan='12'>&nbsp;</td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></tr>";
                                                 echo "<tr><td style='display: none;'>" . $i . "</td><td>&nbsp;</td><td>Nama</td><td colspan='10'> : " . $nm_pegawai_cursor . "</td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td></tr>";
                                                 echo "<tr><td style='display: none;'>" . $i . "</td><td>&nbsp;</td><td>NIP</td><td colspan='10'> :" . $nip_pegawai_cursor . "</td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td></tr>";
                                                 echo "<tr><td style='display: none;'>" . $i . "</td><td>&nbsp;</td><td>Unit</td><td colspan='10'> : " . $unit_cursor . "</td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td><td style='display: none;'></td></tr>";
@@ -659,22 +704,23 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                                 $total_durasi_kerja_minutes += (int) str_replace('jam', '', $durasikerja_minutes);
 
                                                 // section summary telat dkk
-                                                if ($i + 1 >= count($result)) echo "<tr><td style='display: none;'>" . $i . "</td><th></th><th></th><th></th><th></th><th></th><th>" . ($total_telat_hour + floor($total_telat_menit / 60)) . " jam</th><th>" . ceil($total_telat_menit % 60) . " menit</th><th>" . ($total_pulang_cepat_hour + floor($total_pulang_cepat_minutes / 60)) . " jam</th><th>" . ceil($total_pulang_cepat_minutes % 60) . " menit</th><th>" . ($total_durasi_kerja_hour + floor($total_durasi_kerja_minutes / 60)) . " jam</th><th>" . ceil($total_durasi_kerja_minutes % 60) . " menit</th><th></th></tr>";
+                                                if ($i + 1 >= count($result))
+                                                    echo "<tr><td style='display: none;'>" . $i . "</td><th></th><th></th><th></th><th></th><th></th><th>" . ($total_telat_hour + floor($total_telat_menit / 60)) . " jam</th><th>" . ceil($total_telat_menit % 60) . " menit</th><th>" . ($total_pulang_cepat_hour + floor($total_pulang_cepat_minutes / 60)) . " jam</th><th>" . ceil($total_pulang_cepat_minutes % 60) . " menit</th><th>" . ($total_durasi_kerja_hour + floor($total_durasi_kerja_minutes / 60)) . " jam</th><th>" . ceil($total_durasi_kerja_minutes % 60) . " menit</th><th></th></tr>";
                                             }
                                         }
                                         ?>
                                     </tbody>
                                 </table>
                             </div>
-                        <?php
+                            <?php
                         }
                         ?>
                     </div>
                 </div>
-            <?php
-            break;
-        case "cek-absensi-pegawai":
-            ?>
+                <?php
+                break;
+    case "cek-absensi-pegawai":
+        ?>
                 <div class="box">
                     <div class="box">
                         <div class="box-header with-border">
@@ -700,17 +746,20 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                         </tr>
                                         <tr>
                                             <td>
-                                                <select class="form-control select2" name="bulan" data-placeholder="-Pilih Bulan-" required>
+                                                <select class="form-control select2" name="bulan"
+                                                    data-placeholder="-Pilih Bulan-" required>
                                                     <?php loadBln('-Pilih Bulan-'); ?>
                                                 </select>
                                             </td>
                                             <td>
-                                                <select class="form-control select2" name="tahun" data-placeholder="-Pilih Tahun-" required>
+                                                <select class="form-control select2" name="tahun"
+                                                    data-placeholder="-Pilih Tahun-" required>
                                                     <?php loadThn('-Pilih Tahun-'); ?>
                                                 </select>
                                             </td>
                                             <td>
-                                                <button type="submit" name="search" name="submit" value="submit" class="btn btn-info"><i class="fa fa-search"></i></button>
+                                                <button type="submit" name="search" name="submit" value="submit"
+                                                    class="btn btn-info"><i class="fa fa-search"></i></button>
                                             </td>
                                         </tr>
                                     </table>
@@ -732,7 +781,8 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             //api absensi
                             ?>
                             <div class="box-header with-border">
-                                <h3 class="box-title fa fa-list"> <label align="center">Laporan Absensi <?php echo konversiBulanTahun($bulan_absensi) . " "; ?></label></h3>
+                                <h3 class="box-title fa fa-list"> <label align="center">Laporan Absensi
+                                        <?php echo konversiBulanTahun($bulan_absensi) . " "; ?></label></h3>
                                 <div class="box-tools pull-right">
                                 </div>
                             </div>
@@ -837,7 +887,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                                 $telat = $telat;
                                             }
                                             $totelat[] = $telat;
-                                        ?>
+                                            ?>
                                             <tr>
                                                 <td><?php echo $tanggalan . " (" . hariindo($from) . ")"; ?></td>
                                                 <td><?php echo $biodata['nama_pegawai']; ?></td>
@@ -845,9 +895,9 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                                 <td><?php echo $absen_out; ?></td>
                                                 <td><?php echo $telat; ?></td>
                                                 <td><?php echo $status; ?></td>
-                                            <?php
+                                                <?php
                                         }
-                                            ?>
+                                        ?>
                                     </tbody>
                                     <thead>
                                         <tr>
@@ -863,12 +913,12 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             </div>
                         </div>
                     </div>
-                <?php
-                break;
+                    <?php
+                    break;
 
-            case "absensi-pegawai1":
-                require_once('conf/conf_absensi.php');
-                ?>
+    case "absensi-pegawai1":
+        require_once('conf/conf_absensi.php');
+        ?>
                     <div class="box">
                         <div class="box-header with-border">
                             <h3 class="box-title fa fa-list"> CHECK IN OUT ABSENSI PEGAWAI</h3>
@@ -893,17 +943,20 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                         </tr>
                                         <tr>
                                             <td>
-                                                <select class="form-control select2" name="bulan" data-placeholder="-Pilih Bulan-" required>
+                                                <select class="form-control select2" name="bulan"
+                                                    data-placeholder="-Pilih Bulan-" required>
                                                     <?php loadBln('-Pilih Bulan-'); ?>
                                                 </select>
                                             </td>
                                             <td>
-                                                <select class="form-control select2" name="tahun" data-placeholder="-Pilih Tahun-" required>
+                                                <select class="form-control select2" name="tahun"
+                                                    data-placeholder="-Pilih Tahun-" required>
                                                     <?php loadThn('-Pilih Tahun-'); ?>
                                                 </select>
                                             </td>
                                             <td>
-                                                <button type="submit" name="search" name="submit" value="submit" class="btn btn-info"><i class="fa fa-search"></i></button>
+                                                <button type="submit" name="search" name="submit" value="submit"
+                                                    class="btn btn-info"><i class="fa fa-search"></i></button>
                                             </td>
                                         </tr>
                                     </table>
@@ -917,18 +970,19 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             $tmtcek = FormatTgl('Y-m-d', $tahun_post . "-" . $bulan_post . "-01");
                             if ($bulan_post == '-Pilih Bulan-' or $tahun_post == 'Tidak Boleh') {
                                 $bulan_absensi = date('Y-m-d');
-                            ?>
+                                ?>
                                 <div class="box-header with-border">
                                     <h3 class="box-title fa fa-list"> <label>Bulan dan Tahun Tidak Sesuai</label></h3>
                                     <div class="box-tools pull-right">
                                     </div>
                                 </div>
-                            <?php
+                                <?php
                             } else {
                                 $bulan_absensi = $tmtcek;
-                            ?>
+                                ?>
                                 <div class="box-header with-border">
-                                    <h3 class="box-title fa fa-list"> <label align="center"> Laporan Absensi <?php echo konversiBulanTahun($bulan_absensi); ?></label></h3>
+                                    <h3 class="box-title fa fa-list"> <label align="center"> Laporan Absensi
+                                            <?php echo konversiBulanTahun($bulan_absensi); ?></label></h3>
                                     <div class="box-tools pull-right">
                                     </div>
                                 </div>
@@ -1057,37 +1111,38 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                             } else {
                                                 $telat = $telat;
                                             }
-                                        ?>
+                                            ?>
                                             <tr>
                                                 <td><?php echo $tanggalan . " (" . hariindo($from) . ")"; ?></td>
                                                 <td><?php echo $nama_pegawai; ?></td>
                                                 <td style="background-color: <?php
-                                                                                if ($absen_in == '-') {
-                                                                                    echo '#b2b4e1';
-                                                                                }
-                                                                                ?>;"><?php echo $absen_in; ?></td>
+                                                if ($absen_in == '-') {
+                                                    echo '#b2b4e1';
+                                                }
+                                                ?>;"><?php echo $absen_in; ?></td>
                                                 <td style="background-color: <?php
-                                                                                if ($absen_out == '-') {
-                                                                                    echo '#b2b4e1';
-                                                                                }
-                                                                                ?>;"><?php echo $absen_out; ?></td>
+                                                if ($absen_out == '-') {
+                                                    echo '#b2b4e1';
+                                                }
+                                                ?>;"><?php echo $absen_out; ?></td>
                                                 <!--                    <td><?php // echo $absen_in1;                                                  
-                                                                            ?></td>
+                                                            ?></td>
                                     <td><?php // echo $absen_out1;                                                   
-                                        ?></td>-->
+                                                ?></td>-->
                                                 <td style="background-color: <?php
-                                                                                if ($telat > 0) {
-                                                                                    echo '#e48080';
-                                                                                }
-                                                                                ?>;"><?php
-                                                                                        if ($telat == '0') {
-                                                                                        } else {
-                                                                                            echo $telat;
-                                                                                        };
-                                                                                        ?></td>
+                                                if ($telat > 0) {
+                                                    echo '#e48080';
+                                                }
+                                                ?>;"><?php
+                                                if ($telat == '0') {
+                                                } else {
+                                                    echo $telat;
+                                                }
+                                                ;
+                                                ?></td>
                                                 <td><?php echo $status; ?></td>
                                             </tr>
-                                        <?php
+                                            <?php
                                             $totelat[] = $telat;
                                         }
                                         ?>
@@ -1106,15 +1161,17 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             </div>
                         </div>
                     </div>
-                <?php
-                break;
+                    <?php
+                    break;
 
-            case "rekap-absensi-pegawai":
-                ?>
-                    <input type="hidden" id="rekap-absensi-pegawai-id_kepegawaian" name="rekap-absensi-pegawai-id_kepegawaian" value="<?php echo $id_user; ?>">
+    case "rekap-absensi-pegawai":
+        ?>
+                    <input type="hidden" id="rekap-absensi-pegawai-id_kepegawaian" name="rekap-absensi-pegawai-id_kepegawaian"
+                        value="<?php echo $id_user; ?>">
                     <!-- modal - modal -->
 
-                    <div class="modal fade" id="modal-warning-update-absensi-pegawai" name="modal-warning-update-absensi-pegawai" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
+                    <div class="modal fade" id="modal-warning-update-absensi-pegawai"
+                        name="modal-warning-update-absensi-pegawai" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
                         <div class="modal-dialog" role="document">
                             <div class="modal-content">
                                 <div class="modal-header"></div>
@@ -1126,13 +1183,16 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                                    <button type="button" class="btn btn-warning" onclick="update_absensi_pegawai(`<?php echo $id_user; ?>`);">SIMPAN</button>
+                                    <button type="button" class="btn btn-warning"
+                                        onclick="update_absensi_pegawai(`<?php echo $id_user; ?>`);">SIMPAN</button>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="modal fade" id="modal-status-absensi-unit_absensi-pegawai" name="modal-status-absensi-unit_absensi-pegawai" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
+                    <div class="modal fade" id="modal-status-absensi-unit_absensi-pegawai"
+                        name="modal-status-absensi-unit_absensi-pegawai" tabindex="-1" role="dialog"
+                        aria-labelledby="myModalLabel1">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -1142,7 +1202,8 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                     <h3 class="modal-title fa fa-calendar">&nbsp;Lihat Status Absensi Unit</h3>
                                 </div>
                                 <div class="modal-body">
-                                    <table id="modal-status-absensi-unit_absensi-pegawai_table" class="table table-bordered table-striped">
+                                    <table id="modal-status-absensi-unit_absensi-pegawai_table"
+                                        class="table table-bordered table-striped">
                                         <thead>
                                             <tr>
                                                 <th>No.</th>
@@ -1160,14 +1221,16 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                                    <button type="button" class="btn btn-success" onclick="get_status_duplikat_absensi_pegawai();">Lanjutkan Generate Absensi</button>
+                                    <button type="button" class="btn btn-success"
+                                        onclick="get_status_duplikat_absensi_pegawai();">Lanjutkan Generate Absensi</button>
                                     <!-- <button type="button" class="btn btn-success" onclick="rekap_cuti();">Lanjutkan Generate Absensi</button> -->
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="modal fade" id="modal-hapus-absensi_shift" name="modal-hapus-absensi_shift" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
+                    <div class="modal fade" id="modal-hapus-absensi_shift" name="modal-hapus-absensi_shift" tabindex="-1"
+                        role="dialog" aria-labelledby="myModalLabel1">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -1183,7 +1246,8 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Batal</button>
-                                    <button type="button" class="btn btn-danger" onclick="delete_rekap_detail_absensi_pegawai_button();">Ya</button>
+                                    <button type="button" class="btn btn-danger"
+                                        onclick="delete_rekap_detail_absensi_pegawai_button();">Ya</button>
                                 </div>
                             </div>
                         </div>
@@ -1195,7 +1259,8 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                         <div class="box-header with-border">
                             <h3 class="box-title fa fa-list">&nbsp;PILIH PERIODE</h3>
                             <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                                    title="Collapse">
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </div>
@@ -1206,14 +1271,18 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 <div class="form-group">
                                     Bulan
                                     <br>
-                                    <select class="form-control select2" id="rekap-absensi-pegawai-select-month" name="rekap-absensi-pegawai-select-month" data-placeholder="-Pilih Bulan-" onchange="select_date_rekap_absensi_pegawai_event(this);">
+                                    <select class="form-control select2" id="rekap-absensi-pegawai-select-month"
+                                        name="rekap-absensi-pegawai-select-month" data-placeholder="-Pilih Bulan-"
+                                        onchange="select_date_rekap_absensi_pegawai_event(this);">
                                         <?php loadBln("-Pilih Bulan-"); ?>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     Tahun
                                     <br>
-                                    <select class="form-control select2" id="rekap-absensi-pegawai-select-year" name="rekap-absensi-pegawai-select-year" data-placeholder="-Pilih Tahun-" onchange="select_date_rekap_absensi_pegawai_event(this);">
+                                    <select class="form-control select2" id="rekap-absensi-pegawai-select-year"
+                                        name="rekap-absensi-pegawai-select-year" data-placeholder="-Pilih Tahun-"
+                                        onchange="select_date_rekap_absensi_pegawai_event(this);">
                                         <?php loadThn('-Pilih Tahun-'); ?>
                                     </select>
                                 </div>
@@ -1221,15 +1290,20 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             </div>
                             <div class="form-group">
                                 <br>
-                                <button name="btn-rekap-absensi-pegawai-search" value="Cari" class="btn btn-info btn-md" onclick="rekap_absensi_pegawai_search_periode();">
+                                <button name="btn-rekap-absensi-pegawai-search" value="Cari" class="btn btn-info btn-md"
+                                    onclick="rekap_absensi_pegawai_search_periode();">
                                     Cari Rekapitulasi
                                 </button>
 
-                                <button id="btn-delete-absensi-pegawai" name="btn-delete-absensi-pegawai" class="btn btn-danger btn-md" onclick="show_modal_hapus_absensi_pegawai();" style="display: none">
+                                <button id="btn-delete-absensi-pegawai" name="btn-delete-absensi-pegawai"
+                                    class="btn btn-danger btn-md" onclick="show_modal_hapus_absensi_pegawai();"
+                                    style="display: none">
                                     Hapus Rekapitulasi Absensi
                                 </button>
 
-                                <button id="btn-generate-rekap-absensi-pegawai" name="btn-generate-rekap-absensi-pegawai" class="btn btn-success btn-md" onclick="get_status_unit_rekapitulasi_absensi_pegawai();" style="display: none;">
+                                <button id="btn-generate-rekap-absensi-pegawai" name="btn-generate-rekap-absensi-pegawai"
+                                    class="btn btn-success btn-md" onclick="get_status_unit_rekapitulasi_absensi_pegawai();"
+                                    style="display: none;">
                                     Lihat Status Absensi Unit
                                 </button>
                             </div>
@@ -1238,7 +1312,8 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
 
                     <div class="box">
                         <div class="box-header with-border">
-                            <h3 class="box-title fa fa-list"> REKAPITULASI ABSENSI PEGAWAI BULAN <?php echo strtoupper((konversiBulanTahun(TanggalAkhirBulanKemarin()))); ?></h3>
+                            <h3 class="box-title fa fa-list"> REKAPITULASI ABSENSI PEGAWAI BULAN
+                                <?php echo strtoupper((konversiBulanTahun(TanggalAkhirBulanKemarin()))); ?></h3>
                             <div class="box-tools pull-right">
                                 <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
                                     title="Collapse">
@@ -1286,7 +1361,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                             $pengurangan = fetch_array(bukaquery("SELECT * FROM tm_waktu_k where tm_waktu_k.date_k='$tmtcek' and tm_waktu_k.id_user='$row[id_user]'"));
                                             //$shift = fetch_array(bukaquery("SELECT * FROM tm_waktu_s where tm_waktu_s.date_s='$tmtcek' and tm_waktu_s.id_user='$row[id_user]'"));
                                             $jhk = fetch_array(bukaquery("SELECT (tm_waktu_s.j_hkm+tm_waktu_s.j_hks+tm_waktu_s.j_hlm+tm_waktu_s.j_hlp+tm_waktu_s.j_hls+tm_waktu_s.j_hrm+tm_waktu_s.j_hrp+tm_waktu_s.j_hrs+tm_waktu_s.j_ns) as jumlah from tm_waktu_s where tm_waktu_s.date_s='$tmtcek' and tm_waktu_s.id_user='$row[id_user]'"))
-                                        ?>
+                                                ?>
                                             <tr>
                                                 <td><?php echo $no; ?></td>
                                                 <td><?php echo $row['nip']; ?></td>
@@ -1298,44 +1373,59 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                                 <td><?php echo $pengurangan['izin']; ?></td>
                                                 <td>asd<?php echo $pengurangan['telat']; ?></td>
                                                 <td><?php
-                                                    if ($jhk['jumlah'] != '') {
-                                                        echo $jhk['jumlah'] . " Hari";
-                                                    }
-                                                    ?></td>
+                                                if ($jhk['jumlah'] != '') {
+                                                    echo $jhk['jumlah'] . " Hari";
+                                                }
+                                                ?></td>
                                                 <td>
                                                     <?php if ($cv_waktu_penambahan != '0') { ?>
-                                                        <a href="?<?php echo paramEncrypt('module=validasi-pegawai&act=validasi-waktu-pengurangan&id=' . $row['id_user']); ?>">
-                                                            <i title="VALIDASI WAKTU PENGURANGAN SELESAI" class="btn-xs btn-success fa fa-clock-o"> -</i>
+                                                        <a
+                                                            href="?<?php echo paramEncrypt('module=validasi-pegawai&act=validasi-waktu-pengurangan&id=' . $row['id_user']); ?>">
+                                                            <i title="VALIDASI WAKTU PENGURANGAN SELESAI"
+                                                                class="btn-xs btn-success fa fa-clock-o"> -</i>
                                                         </a>
                                                     <?php } else { ?>
-                                                        <a href="?<?php echo paramEncrypt('module=validasi-pegawai&act=validasi-waktu-pengurangan&id=' . $row['id_user']); ?>">
-                                                            <i title="VALIDASI WAKTU PENGURANGAN BELUM" class="btn-xs btn-danger fa fa-clock-o"> -</i>
+                                                        <a
+                                                            href="?<?php echo paramEncrypt('module=validasi-pegawai&act=validasi-waktu-pengurangan&id=' . $row['id_user']); ?>">
+                                                            <i title="VALIDASI WAKTU PENGURANGAN BELUM"
+                                                                class="btn-xs btn-danger fa fa-clock-o"> -</i>
                                                         </a>
                                                     <?php } ?>
 
                                                     <?php if ($cv_waktu_pengurangan != '0') { ?>
-                                                        <a href="?<?php echo paramEncrypt('module=validasi-pegawai&act=validasi-waktu-penambahan&id=' . $row['id_user']); ?>">
-                                                            <i title="VALIDASI WAKTU PENAMBAHAN SELESAI" class="btn-xs btn-success fa fa-clock-o"> +</i>
+                                                        <a
+                                                            href="?<?php echo paramEncrypt('module=validasi-pegawai&act=validasi-waktu-penambahan&id=' . $row['id_user']); ?>">
+                                                            <i title="VALIDASI WAKTU PENAMBAHAN SELESAI"
+                                                                class="btn-xs btn-success fa fa-clock-o"> +</i>
                                                         </a>
                                                     <?php } else { ?>
-                                                        <a href="?<?php echo paramEncrypt('module=validasi-pegawai&act=validasi-waktu-penambahan&id=' . $row['id_user']); ?>">
-                                                            <i title="VALIDASI WAKTU PENAMBAHAN BELUM" class="btn-xs btn-danger fa fa-clock-o"> +</i>
+                                                        <a
+                                                            href="?<?php echo paramEncrypt('module=validasi-pegawai&act=validasi-waktu-penambahan&id=' . $row['id_user']); ?>">
+                                                            <i title="VALIDASI WAKTU PENAMBAHAN BELUM"
+                                                                class="btn-xs btn-danger fa fa-clock-o"> +</i>
                                                         </a>
                                                     <?php } ?>
 
                                                     <?php if ($cv_waktu_shift != '0') { ?>
-                                                        <a href="?<?php echo paramEncrypt('module=validasi-pegawai&act=validasi-waktu-shift&id=' . $row['id_user']); ?>">
-                                                            <i ttitle="VALIDASI WAKTU SHIFT SELESAI" class="btn-xs btn-success fa fa-clock-o"> S</i>
+                                                        <a
+                                                            href="?<?php echo paramEncrypt('module=validasi-pegawai&act=validasi-waktu-shift&id=' . $row['id_user']); ?>">
+                                                            <i ttitle="VALIDASI WAKTU SHIFT SELESAI"
+                                                                class="btn-xs btn-success fa fa-clock-o"> S</i>
                                                         </a>
                                                     <?php } else { ?>
-                                                        <a href="?<?php echo paramEncrypt('module=validasi-pegawai&act=validasi-waktu-shift&id=' . $row['id_user']); ?>">
-                                                            <i ttitle="VALIDASI WAKTU SHIFT SELESAI" class="btn-xs btn-danger fa fa-clock-o"> S</i>
+                                                        <a
+                                                            href="?<?php echo paramEncrypt('module=validasi-pegawai&act=validasi-waktu-shift&id=' . $row['id_user']); ?>">
+                                                            <i ttitle="VALIDASI WAKTU SHIFT SELESAI"
+                                                                class="btn-xs btn-danger fa fa-clock-o"> S</i>
                                                         </a>
                                                     <?php } ?>
-                                                    <a href="?<?php echo paramEncrypt("module=absensi-pegawai&act=cek-absensi-pegawai&id=" . $row['nip'] . "&dpa=" . $row['id_unit'] . ""); ?>"><span title="Absensi" class="btn-xs btn-info fa fa-eye"><?php echo $row['nip']; ?></span></a>
+                                                    <a
+                                                        href="?<?php echo paramEncrypt("module=absensi-pegawai&act=cek-absensi-pegawai&id=" . $row['nip'] . "&dpa=" . $row['id_unit'] . ""); ?>"><span
+                                                            title="Absensi"
+                                                            class="btn-xs btn-info fa fa-eye"><?php echo $row['nip']; ?></span></a>
                                                 </td>
                                             </tr>
-                                        <?php
+                                            <?php
                                         }
                                         ?>
                                     </tbody>
@@ -1343,7 +1433,9 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             </div>
                         </div>
                         <div class="box-body">
-                            <span id="rekap-absensi-update-button" name="rekap-absensi-update-button" data-toggle="modal" data-target="#modal-warning-update-absensi-pegawai" class="btn btn-block btn-warning btn-lg" style="display: none;">
+                            <span id="rekap-absensi-update-button" name="rekap-absensi-update-button" data-toggle="modal"
+                                data-target="#modal-warning-update-absensi-pegawai" class="btn btn-block btn-warning btn-lg"
+                                style="display: none;">
                                 <i class="fa fa-send">&nbsp;&nbsp;&nbsp;PERBARUI</i>
                             </span>
                         </div>
@@ -1353,7 +1445,8 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                         <div class="box-header with-border">
                             <h3 class="box-title fa fa-list">&nbsp;DAFTAR UNIT TELAH DIREKAPITULASI</h3>
                             <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                                    title="Collapse">
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </div>
@@ -1373,11 +1466,11 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             </div>
                         </div>
                     </div>
-                <?php
-                break;
+                    <?php
+                    break;
 
-            case "detail-absensi-pegawai":
-                ?>
+    case "detail-absensi-pegawai":
+        ?>
                     <!-- Modal modal -->
                     <div class="modal fade" id="detail-absensi-pegawai_edit-shift">
                         <div class="modal-dialog modal-lg">
@@ -1389,38 +1482,60 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                     <h3 class="modal-title fa fa-calendar">&nbsp;Ubah Shift</h3>
                                 </div>
                                 <div class="modal-body">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_id-kepegawaian" name="detail-absensi-pegawai_edit-shift_id-kepegawaian">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_id-unit" name="detail-absensi-pegawai_edit-shift_id-unit">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_id-user" name="detail-absensi-pegawai_edit-shift_id-user">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_log-finger" name="detail-absensi-pegawai_edit-shift_log-finger">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_month" name="detail-absensi-pegawai_edit-shift_month">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_year" name="detail-absensi-pegawai_edit-shift_year">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_date" name="detail-absensi-pegawai_edit-shift_date">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_id-absensi" name="detail-absensi-pegawai_edit-shift_id-absensi">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_id-absensi-tipe" name="detail-absensi-pegawai_edit-shift_id-absensi-tipe">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_id-ketidakhadiran" name="detail-absensi-pegawai_edit-shift_id-ketidakhadiran">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_id-kepegawaian"
+                                        name="detail-absensi-pegawai_edit-shift_id-kepegawaian">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_id-unit"
+                                        name="detail-absensi-pegawai_edit-shift_id-unit">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_id-user"
+                                        name="detail-absensi-pegawai_edit-shift_id-user">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_log-finger"
+                                        name="detail-absensi-pegawai_edit-shift_log-finger">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_month"
+                                        name="detail-absensi-pegawai_edit-shift_month">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_year"
+                                        name="detail-absensi-pegawai_edit-shift_year">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_date"
+                                        name="detail-absensi-pegawai_edit-shift_date">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_id-absensi"
+                                        name="detail-absensi-pegawai_edit-shift_id-absensi">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_id-absensi-tipe"
+                                        name="detail-absensi-pegawai_edit-shift_id-absensi-tipe">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit-shift_id-ketidakhadiran"
+                                        name="detail-absensi-pegawai_edit-shift_id-ketidakhadiran">
                                     <div class="form-group" id="detail-absensi-pegawai_edit-shift_profil"></div>
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Status Shift</label>
-                                                <select class="form-control select2" style="width: 100%;" id="detail-absensi-pegawai_edit-shift_shift-option" name="detail-absensi-pegawai_edit-shift_shift-option" onchange="modaleditshift_options_shift();"></select>
+                                                <select class="form-control select2" style="width: 100%;"
+                                                    id="detail-absensi-pegawai_edit-shift_shift-option"
+                                                    name="detail-absensi-pegawai_edit-shift_shift-option"
+                                                    onchange="modaleditshift_options_shift();"></select>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label>Status Shift</label>
-                                                <select class="form-control select2" style="width: 100%;" id="detail-absensi-pegawai_edit-shift_shift-tipe-option" name="detail-absensi-pegawai_edit-shift_shift-tipe-option" onchange="modaleditshift_options_shifttipe();"></select>
+                                                <select class="form-control select2" style="width: 100%;"
+                                                    id="detail-absensi-pegawai_edit-shift_shift-tipe-option"
+                                                    name="detail-absensi-pegawai_edit-shift_shift-tipe-option"
+                                                    onchange="modaleditshift_options_shifttipe();"></select>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label>Status Ketidakhadiran</label>
-                                        <select class="form-control select2" style="width: 100%;" id="detail-absensi-pegawai_edit-shift_ketidakhadiran-option" name="detail-absensi-pegawai_edit-shift_ketidakhadiran-option" onchange="modaleditshift_options_ketidakhadiran();"></select>
+                                        <select class="form-control select2" style="width: 100%;"
+                                            id="detail-absensi-pegawai_edit-shift_ketidakhadiran-option"
+                                            name="detail-absensi-pegawai_edit-shift_ketidakhadiran-option"
+                                            onchange="modaleditshift_options_ketidakhadiran();"></select>
                                     </div>
                                     <div class="form-group">
                                         <label>Hari Libur</label>
-                                        <select class="form-control select2" style="width: 100%;" id="detail-absensi-pegawai_edit-shift_harilibur" name="detail-absensi-pegawai_edit-shift_harilibur" onchange="modaleditshift_options_harilibur();">
+                                        <select class="form-control select2" style="width: 100%;"
+                                            id="detail-absensi-pegawai_edit-shift_harilibur"
+                                            name="detail-absensi-pegawai_edit-shift_harilibur"
+                                            onchange="modaleditshift_options_harilibur();">
                                             <option selected value="0">Tidak</option>
                                             <option value="1">Ya</option>
                                         </select>
@@ -1428,7 +1543,9 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Tutup</button>
-                                    <button type="button" id="detail-absensi-pegawai_edit-shift_harilibur-btn" class="btn btn-warning" onclick="put_shift_detail_absensi_pegawai(`#`+this.id);">Perbarui</button>
+                                    <button type="button" id="detail-absensi-pegawai_edit-shift_harilibur-btn"
+                                        class="btn btn-warning"
+                                        onclick="put_shift_detail_absensi_pegawai(`#`+this.id);">Perbarui</button>
                                 </div>
                             </div>
                         </div>
@@ -1444,19 +1561,28 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                     <h3 class="modal-title fa fa-calendar">&nbsp;Ubah Absensi Masuk Pegawai</h3>
                                 </div>
                                 <div class="modal-body">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensimasuk_id-kepegawaian" name="detail-absensi-pegawai_edit_absensimasuk_id-kepegawaian">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensimasuk_id-user" name="detail-absensi-pegawai_edit_absensimasuk_id-user">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensimasuk_id-unit" name="detail-absensi-pegawai_edit_absensimasuk_id-unit">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensimasuk_month" name="detail-absensi-pegawai_edit_absensimasuk_month">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensimasuk_year" name="detail-absensi-pegawai_edit_absensimasuk_year">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensimasuk_date" name="detail-absensi-pegawai_edit_absensimasuk_date">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensimasuk_id-kepegawaian"
+                                        name="detail-absensi-pegawai_edit_absensimasuk_id-kepegawaian">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensimasuk_id-user"
+                                        name="detail-absensi-pegawai_edit_absensimasuk_id-user">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensimasuk_id-unit"
+                                        name="detail-absensi-pegawai_edit_absensimasuk_id-unit">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensimasuk_month"
+                                        name="detail-absensi-pegawai_edit_absensimasuk_month">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensimasuk_year"
+                                        name="detail-absensi-pegawai_edit_absensimasuk_year">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensimasuk_date"
+                                        name="detail-absensi-pegawai_edit_absensimasuk_date">
 
                                     <div class="form-group" id="detail-absensi-pegawai_edit_absensimasuk_profile"></div>
                                     <div class="row">
                                         <div class="col-md-5">
                                             <div class="form-group">
                                                 <label>Pilih Absensi Masuk Baru</label>
-                                                <select class="form-control" style="width: 100%;" id="detail-absensi-pegawai_edit_absensimasuk_list" name="detail-absensi-pegawai_edit_absensimasuk_list" onchange="modaleditabsensimasuk_list_event(this);"></select>
+                                                <select class="form-control" style="width: 100%;"
+                                                    id="detail-absensi-pegawai_edit_absensimasuk_list"
+                                                    name="detail-absensi-pegawai_edit_absensimasuk_list"
+                                                    onchange="modaleditabsensimasuk_list_event(this);"></select>
                                             </div>
                                         </div>
                                         <div class="col-md-1">
@@ -1467,10 +1593,18 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                                 <label>Buat Absensi Masuk Baru</label>
                                                 <div class="row">
                                                     <div class="col-md-5">
-                                                        <input type="text" class="form-control" id="detail-absensi-pegawai_edit_absensimasuk_date-new" name="detail-absensi-pegawai_edit_absensimasuk_date-new" data-inputmask='"mask":"9999-99-99", "placeholder": "yyyy-mm-dd"' onchange="modaleditabsensimasuk_date_event(this);" data-mask>
+                                                        <input type="text" class="form-control"
+                                                            id="detail-absensi-pegawai_edit_absensimasuk_date-new"
+                                                            name="detail-absensi-pegawai_edit_absensimasuk_date-new"
+                                                            data-inputmask='"mask":"9999-99-99", "placeholder": "yyyy-mm-dd"'
+                                                            onchange="modaleditabsensimasuk_date_event(this);" data-mask>
                                                     </div>
                                                     <div class="col-md-5">
-                                                        <input type="text" class="form-control" id="detail-absensi-pegawai_edit_absensimasuk_time-new" name="detail-absensi-pegawai_edit_absensimasuk_time-new" data-inputmask='"mask":"99:99:99", "placeholder": "hh:ii:ss"' onchange="modaleditabsensimasuk_time_event(this);" data-mask>
+                                                        <input type="text" class="form-control"
+                                                            id="detail-absensi-pegawai_edit_absensimasuk_time-new"
+                                                            name="detail-absensi-pegawai_edit_absensimasuk_time-new"
+                                                            data-inputmask='"mask":"99:99:99", "placeholder": "hh:ii:ss"'
+                                                            onchange="modaleditabsensimasuk_time_event(this);" data-mask>
                                                     </div>
                                                     <div class="col-md-1">
                                                         <button type="button" class="btn btn-sm btn-primary">Set</button>
@@ -1483,13 +1617,17 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                         <tr>
                                             <td><label>Jam Masuk Baru Terpilih</label></td>
                                             <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                                            <td><input class="form-control" id="detail-absensi-pegawai_edit_absensimasuk_selected" name="detail-absensi-pegawai_edit_absensimasuk_selected" type="text" disabled></td>
+                                            <td><input class="form-control"
+                                                    id="detail-absensi-pegawai_edit_absensimasuk_selected"
+                                                    name="detail-absensi-pegawai_edit_absensimasuk_selected" type="text"
+                                                    disabled></td>
                                         </tr>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-warning" onclick="put_absensimasuk_detail_absensi_pegawai();">Update</button>
+                                    <button type="button" class="btn btn-warning"
+                                        onclick="put_absensimasuk_detail_absensi_pegawai();">Update</button>
                                 </div>
                             </div>
                         </div>
@@ -1505,19 +1643,28 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                     <h3 class="modal-title fa fa-calendar">&nbsp;Ubah Absensi Pulang Pegawai</h3>
                                 </div>
                                 <div class="modal-body">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensipulang_id-kepegawaian" name="detail-absensi-pegawai_edit_absensipulang_id-kepegawaian">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensipulang_id-user" name="detail-absensi-pegawai_edit_absensipulang_id-user">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensipulang_id-unit" name="detail-absensi-pegawai_edit_absensipulang_id-unit">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensipulang_month" name="detail-absensi-pegawai_edit_absensipulang_month">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensipulang_year" name="detail-absensi-pegawai_edit_absensipulang_year">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensipulang_date" name="detail-absensi-pegawai_edit_absensipulang_date">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensipulang_id-kepegawaian"
+                                        name="detail-absensi-pegawai_edit_absensipulang_id-kepegawaian">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensipulang_id-user"
+                                        name="detail-absensi-pegawai_edit_absensipulang_id-user">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensipulang_id-unit"
+                                        name="detail-absensi-pegawai_edit_absensipulang_id-unit">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensipulang_month"
+                                        name="detail-absensi-pegawai_edit_absensipulang_month">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensipulang_year"
+                                        name="detail-absensi-pegawai_edit_absensipulang_year">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_absensipulang_date"
+                                        name="detail-absensi-pegawai_edit_absensipulang_date">
 
                                     <div class="form-group" id="detail-absensi-pegawai_edit_absensipulang_profile"></div>
                                     <div class="row">
                                         <div class="col-md-5">
                                             <div class="form-group">
                                                 <label>Pilih Absensi Pulang Baru</label>
-                                                <select class="form-control" style="width: 100%;" id="detail-absensi-pegawai_edit_absensipulang_list" name="detail-absensi-pegawai_edit_absensipulang_list" onchange="modaleditabsensipulang_list_event(this);"></select>
+                                                <select class="form-control" style="width: 100%;"
+                                                    id="detail-absensi-pegawai_edit_absensipulang_list"
+                                                    name="detail-absensi-pegawai_edit_absensipulang_list"
+                                                    onchange="modaleditabsensipulang_list_event(this);"></select>
                                             </div>
                                         </div>
                                         <div class="col-md-1">
@@ -1528,10 +1675,18 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                                 <label>Buat Absensi Pulang Baru</label>
                                                 <div class="row">
                                                     <div class="col-md-5">
-                                                        <input type="text" class="form-control" id="detail-absensi-pegawai_edit_absensipulang_date-new" name="detail-absensi-pegawai_edit_absensipulang_date-new" data-inputmask='"mask":"9999-99-99", "placeholder": "yyyy-mm-dd"' onchange="modaleditabsensipulang_date_event(this);" data-mask>
+                                                        <input type="text" class="form-control"
+                                                            id="detail-absensi-pegawai_edit_absensipulang_date-new"
+                                                            name="detail-absensi-pegawai_edit_absensipulang_date-new"
+                                                            data-inputmask='"mask":"9999-99-99", "placeholder": "yyyy-mm-dd"'
+                                                            onchange="modaleditabsensipulang_date_event(this);" data-mask>
                                                     </div>
                                                     <div class="col-md-5">
-                                                        <input type="text" class="form-control" id="detail-absensi-pegawai_edit_absensipulang_time-new" name="detail-absensi-pegawai_edit_absensipulang_time-new" data-inputmask='"mask":"99:99:99", "placeholder": "hh:ii:ss"' onchange="modaleditabsensipulang_time_event(this);" data-mask>
+                                                        <input type="text" class="form-control"
+                                                            id="detail-absensi-pegawai_edit_absensipulang_time-new"
+                                                            name="detail-absensi-pegawai_edit_absensipulang_time-new"
+                                                            data-inputmask='"mask":"99:99:99", "placeholder": "hh:ii:ss"'
+                                                            onchange="modaleditabsensipulang_time_event(this);" data-mask>
                                                     </div>
                                                     <div class="col-md-1">
                                                         <button type="button" class="btn btn-sm btn-primary">Set</button>
@@ -1544,13 +1699,17 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                         <tr>
                                             <td><label>Jam Pulang Baru Terpilih</label></td>
                                             <td>&nbsp;&nbsp;:&nbsp;&nbsp;</td>
-                                            <td><input class="form-control" id="detail-absensi-pegawai_edit_absensipulang_selected" name="detail-absensi-pegawai_edit_absensipulang_selected" type="text" disabled></td>
+                                            <td><input class="form-control"
+                                                    id="detail-absensi-pegawai_edit_absensipulang_selected"
+                                                    name="detail-absensi-pegawai_edit_absensipulang_selected" type="text"
+                                                    disabled></td>
                                         </tr>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-warning" onclick="put_absensipulang_detail_absensi_pegawai();">Update</button>
+                                    <button type="button" class="btn btn-warning"
+                                        onclick="put_absensipulang_detail_absensi_pegawai();">Update</button>
                                 </div>
                             </div>
                         </div>
@@ -1566,29 +1725,43 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                     <h3 class="modal-title fa fa-calendar">&nbsp;Ubah Keterlambatan Pegawai</h3>
                                 </div>
                                 <div class="modal-body">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_keterlambatan_id-kepegawaian" name="detail-absensi-pegawai_edit_keterlambatan_id-kepegawaian">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_keterlambatan_id-user" name="detail-absensi-pegawai_edit_keterlambatan_id-user">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_keterlambatan_id-unit" name="detail-absensi-pegawai_edit_keterlambatan_id-unit">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_keterlambatan_month" name="detail-absensi-pegawai_edit_keterlambatan_month">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_keterlambatan_year" name="detail-absensi-pegawai_edit_keterlambatan_year">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_keterlambatan_date" name="detail-absensi-pegawai_edit_keterlambatan_date">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_keterlambatan-keterlambatan-old" name="detail-absensi-pegawai_edit_keterlambatan-keterlambatan-old">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_keterlambatan_id-kepegawaian"
+                                        name="detail-absensi-pegawai_edit_keterlambatan_id-kepegawaian">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_keterlambatan_id-user"
+                                        name="detail-absensi-pegawai_edit_keterlambatan_id-user">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_keterlambatan_id-unit"
+                                        name="detail-absensi-pegawai_edit_keterlambatan_id-unit">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_keterlambatan_month"
+                                        name="detail-absensi-pegawai_edit_keterlambatan_month">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_keterlambatan_year"
+                                        name="detail-absensi-pegawai_edit_keterlambatan_year">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_keterlambatan_date"
+                                        name="detail-absensi-pegawai_edit_keterlambatan_date">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_keterlambatan-keterlambatan-old"
+                                        name="detail-absensi-pegawai_edit_keterlambatan-keterlambatan-old">
 
                                     <div class="form-group" id="detail-absensi-pegawai_edit_keterlambatan_profile">
                                     </div>
                                     <div class="form-group">
                                         <label>Keterangan</label>
-                                        <select class="form-control select2" id="detail-absensi-pegawai_edit_keterlambatan-keterangan" name="detail-absensi-pegawai_edit_keterlambatan-keterangan" data-placeholder="-Pilih Keterangan-" style="width: 100%;">
+                                        <select class="form-control select2"
+                                            id="detail-absensi-pegawai_edit_keterlambatan-keterangan"
+                                            name="detail-absensi-pegawai_edit_keterlambatan-keterangan"
+                                            data-placeholder="-Pilih Keterangan-" style="width: 100%;">
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label>Keterlambatan</label>
-                                        <input type="number" class="form-control" id="detail-absensi-pegawai_edit_keterlambatan-keterlambatan" name="detail-absensi-pegawai_edit_keterlambatan-keterlambatan">
+                                        <input type="number" class="form-control"
+                                            id="detail-absensi-pegawai_edit_keterlambatan-keterlambatan"
+                                            name="detail-absensi-pegawai_edit_keterlambatan-keterlambatan">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    <button type="button" id="detail-absensi-pegawai_edit_keterlambatan-keterlambatan-btn" class="btn btn-warning" onclick="put_keterlambatan_absensi_pegawai(`#`+this.id);">Update</button>
+                                    <button type="button" id="detail-absensi-pegawai_edit_keterlambatan-keterlambatan-btn"
+                                        class="btn btn-warning"
+                                        onclick="put_keterlambatan_absensi_pegawai(`#`+this.id);">Update</button>
                                 </div>
                             </div>
                         </div>
@@ -1604,28 +1777,41 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                     <h3 class="modal-title fa fa-calendar">&nbsp;Ubah Menit Pulang Cepat Pegawai</h3>
                                 </div>
                                 <div class="modal-body">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_pulangcepat_id-kepegawaian" name="detail-absensi-pegawai_edit_pulangcepat_id-kepegawaian">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_pulangcepat_id-user" name="detail-absensi-pegawai_edit_pulangcepat_id-user">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_pulangcepat_id-unit" name="detail-absensi-pegawai_edit_pulangcepat_id-unit">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_pulangcepat_month" name="detail-absensi-pegawai_edit_pulangcepat_month">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_pulangcepat_year" name="detail-absensi-pegawai_edit_pulangcepat_year">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_pulangcepat_date" name="detail-absensi-pegawai_edit_pulangcepat_date">
-                                    <input type="hidden" id="detail-absensi-pegawai_edit_pulangcepat-pulangcepat-old" name="detail-absensi-pegawai_edit_pulangcepat-pulangcepat-old">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_pulangcepat_id-kepegawaian"
+                                        name="detail-absensi-pegawai_edit_pulangcepat_id-kepegawaian">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_pulangcepat_id-user"
+                                        name="detail-absensi-pegawai_edit_pulangcepat_id-user">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_pulangcepat_id-unit"
+                                        name="detail-absensi-pegawai_edit_pulangcepat_id-unit">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_pulangcepat_month"
+                                        name="detail-absensi-pegawai_edit_pulangcepat_month">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_pulangcepat_year"
+                                        name="detail-absensi-pegawai_edit_pulangcepat_year">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_pulangcepat_date"
+                                        name="detail-absensi-pegawai_edit_pulangcepat_date">
+                                    <input type="hidden" id="detail-absensi-pegawai_edit_pulangcepat-pulangcepat-old"
+                                        name="detail-absensi-pegawai_edit_pulangcepat-pulangcepat-old">
 
                                     <div class="form-group" id="detail-absensi-pegawai_edit_pulangcepat_profile"></div>
                                     <div class="form-group">
                                         <label>Keterangan</label>
-                                        <select class="form-control select2" id="detail-absensi-pegawai_edit_pulangcepat-keterangan" name="detail-absensi-pegawai_edit_pulangcepat-keterangan" data-placeholder="-Pilih Keterangan-" style="width: 100%;">
+                                        <select class="form-control select2"
+                                            id="detail-absensi-pegawai_edit_pulangcepat-keterangan"
+                                            name="detail-absensi-pegawai_edit_pulangcepat-keterangan"
+                                            data-placeholder="-Pilih Keterangan-" style="width: 100%;">
                                         </select>
                                     </div>
                                     <div class="form-group">
                                         <label>Pulang Cepat</label>
-                                        <input type="number" class="form-control" id="detail-absensi-pegawai_edit_pulangcepat-pulangcepat" name="detail-absensi-pegawai_edit_pulangcepat-pulangcepat">
+                                        <input type="number" class="form-control"
+                                            id="detail-absensi-pegawai_edit_pulangcepat-pulangcepat"
+                                            name="detail-absensi-pegawai_edit_pulangcepat-pulangcepat">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-warning" onclick="put_pulangcepat_absensi_pegawai();">Update</button>
+                                    <button type="button" class="btn btn-warning"
+                                        onclick="put_pulangcepat_absensi_pegawai();">Update</button>
                                 </div>
                             </div>
                         </div>
@@ -1633,9 +1819,11 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                     <!-- End Modal modal -->
                     <div class="box">
                         <div class="box-header with-border">
-                            <h3 class="box-title fa fa-list"> DETAIL ABSENSI PEGAWAI BULAN <?php echo strtoupper(konversiBulan($bulan_temp)) . " " . $tahun_temp; ?></h3>
+                            <h3 class="box-title fa fa-list"> DETAIL ABSENSI PEGAWAI BULAN
+                                <?php echo strtoupper(konversiBulan($bulan_temp)) . " " . $tahun_temp; ?></h3>
                             <div class="box-tools pull-right">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip"
+                                    title="Collapse">
                                     <i class="fa fa-minus"></i>
                                 </button>
                             </div>
@@ -1659,7 +1847,8 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 <table>
                                     <tr>
                                         <td>
-                                            <img src="<?php echo $pegawai['foto'] == '-' || $pegawai['foto'] == '' ? ($pegawai['jk'] == 'L' ? 'img/laki.png' : 'img/perempuan.png') : 'img/' . $pegawai['foto']; ?>" width="150" height="150" class="img-circle" alt="Generic Placeholder Thumbnail">
+                                            <img src="<?php echo $pegawai['foto'] == '-' || $pegawai['foto'] == '' ? ($pegawai['jk'] == 'L' ? 'img/laki.png' : 'img/perempuan.png') : 'img/' . $pegawai['foto']; ?>"
+                                                width="150" height="150" class="img-circle" alt="Generic Placeholder Thumbnail">
                                         </td>
                                         <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
                                         <td>
@@ -1677,7 +1866,8 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                                 <tr>
                                                     <td>Unit</td>
                                                     <td>&nbsp;&nbsp;&nbsp;:&nbsp;&nbsp;&nbsp;</td>
-                                                    <td><?php echo $pegawai['nama_level'] . " - " . $pegawai['nama_unit']; ?></td>
+                                                    <td><?php echo $pegawai['nama_level'] . " - " . $pegawai['nama_unit']; ?>
+                                                    </td>
                                                 </tr>
                                             </table>
                                         </td>
@@ -1760,8 +1950,10 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                     <thead>
                                         <tr>
                                             <th>Total Hari Kerja</th>
-                                            <th>Total Menit Shift&nbsp;<i class="fa fa-question-circle" title="Total Menit Shift = Total Waktu Kerja dari Shift"></i></th>
-                                            <th>Total Menit Kerja&nbsp;<i class="fa fa-question-circle" title="Total Menit Kerja = Total Menit Shfit - Telat"></i></th>
+                                            <th>Total Menit Shift&nbsp;<i class="fa fa-question-circle"
+                                                    title="Total Menit Shift = Total Waktu Kerja dari Shift"></i></th>
+                                            <th>Total Menit Kerja&nbsp;<i class="fa fa-question-circle"
+                                                    title="Total Menit Kerja = Total Menit Shfit - Telat"></i></th>
                                             <th>Hari Kerja Sore</th>
                                             <th>Hari Kerja Malam</th>
                                             <th>Hari Libur Pagi</th>
@@ -1812,8 +2004,10 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             $cek = bukaquery2("SELECT id_level FROM tm_user WHERE id_user = '$_SESSION[id_user]' and id_level = 'LVL-000015'")->num_rows;
 
                             if ($cek == 1) {
-                            ?>
-                                <button class='btn btn-warning' onclick="location.href='<?php echo $url_api_absensi; ?>?action=get_cleaning_absen&id_user=<?php echo $id_user_temp; ?>&bulan=<?php echo $bulan_temp; ?>&tahun=<?php echo $tahun_temp; ?>'">START CLEANING</button>
+                                ?>
+                                <button class='btn btn-warning'
+                                    onclick="location.href='<?php echo $url_api_absensi; ?>?action=get_cleaning_absen&id_user=<?php echo $id_user_temp; ?>&bulan=<?php echo $bulan_temp; ?>&tahun=<?php echo $tahun_temp; ?>'">START
+                                    CLEANING</button>
                             <?php } ?>
                             <div class="form-group">
                                 <h4>Detail Absensi Pegawai</h4>
@@ -1864,10 +2058,10 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                         $btn_ubah_pulangcepat = $row['shift_aktif'] == 'T' && $row['pulang_cepat'] != 0
                                             ? "<button class='btn btn-xs btn-warning' onclick='modal_detail_absensi_pegawai_edit_pulangcepat(`" . $id_user . "`, `" . $row['desc_shift'] . " (" . $row['jam_masuk_absensi_aktif'] . " - " . $row['jam_pulang_absensi_aktif'] . ") " . "`, `" . $row['desc_shift_tipe'] . "`, `" . $row['absensi_pulang'] . "`, `" . $id_unit_temp . "`, `" . $id_user_temp . "`, `" . $temp_log_finger . "`, `" . $pegawai['nip'] . "`, `" . $pegawai['nama_pegawai'] . "`, `" . $pegawai['nama_unit'] . "`, `" . $pegawai['nama_level'] . "`, `" . $row['date'] . "`, `" . $bulan_temp . "`, `" . $tahun_temp . "`);'>ubah</button>"
                                             : "";
-                                        $keterangan_keterlambatan = $row['keterangan_keterlambatan'] != null ||  $row['keterangan_keterlambatan'] != ''
+                                        $keterangan_keterlambatan = $row['keterangan_keterlambatan'] != null || $row['keterangan_keterlambatan'] != ''
                                             ? "Ket : " . $row['keterangan_keterlambatan']
                                             : "";
-                                        $keterangan_pulangcepat = $row['keterangan_pulangcepat'] != null ||  $row['keterangan_pulangcepat'] != ''
+                                        $keterangan_pulangcepat = $row['keterangan_pulangcepat'] != null || $row['keterangan_pulangcepat'] != ''
                                             ? "Ket : " . $row['keterangan_pulangcepat']
                                             : "";
 
@@ -1908,11 +2102,11 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                         </div>
                     </div>
 
-                <?php
-                break;
+                    <?php
+                    break;
 
-            case "laporan-absensi-pegawai":
-                ?>
+    case "laporan-absensi-pegawai":
+        ?>
                     <div class="box">
                         <div class="box-header with-border">
                             <h3 class="box-title fa fa-list"> LAPORAN ABSENSI PEGAWAI 1 </h3>
@@ -1999,7 +2193,8 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                                 </select>
                                             </td>
                                             <td>
-                                                <button type="submit" name="search" name="submit" value="submit" class="btn btn-info"><i class="fa fa-search"></i></button>
+                                                <button type="submit" name="search" name="submit" value="submit"
+                                                    class="btn btn-info"><i class="fa fa-search"></i></button>
                                             </td>
                                         </tr>
                                     </table>
@@ -2015,10 +2210,12 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             $id_unit = isset($_POST['id_unit']) ? $_POST['id_unit'] : null;
 
                             if ($tanggal_start != null && $bulan_start != null && $tahun_start != null && $tanggal_end != null && $bulan_end != null && $tahun_end != null && $id_unit != null) {
-                            ?>
+                                ?>
                                 <!-- /.box-header -->
                                 <div class="box-header with-border">
-                                    <h3 class="box-title fa fa-list"> <label align="center">Laporan Absensi <?= $tanggal_start . "-" . $bulan_start . "-" . $tahun_start . " s/d " . $tanggal_end . "-" . $bulan_end . "-" . $tahun_end; ?></label></h3>
+                                    <h3 class="box-title fa fa-list"> <label align="center">Laporan Absensi
+                                            <?= $tanggal_start . "-" . $bulan_start . "-" . $tahun_start . " s/d " . $tanggal_end . "-" . $bulan_end . "-" . $tahun_end; ?></label>
+                                    </h3>
                                     <div class="box-tools pull-right">
                                     </div>
                                 </div>
@@ -2116,7 +2313,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 ");
                                             while ($row = fetch_array($sql_pegawai)) {
                                                 $no++;
-                                            ?>
+                                                ?>
                                                 <tr>
                                                     <td><?= $no; ?></td>
                                                     <td><?= "'" . $row['nip']; ?></td>
@@ -2131,22 +2328,22 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                                     <td><?= $row['telat'] + $row['pulang_cepat']; ?></td>
                                                     <td><?= $row['jml_shift'] != '' ? $row['jml_shift'] . ' Hari' : ''; ?></td>
                                                 </tr>
-                                            <?php
+                                                <?php
                                             }
                                             ?>
                                         </tbody>
                                     </table>
                                 </div>
-                            <?php
+                                <?php
                             }
                             ?>
                         </div>
                     </div>
-                <?php
-                break;
+                    <?php
+                    break;
 
-            case "pengaturan-absensi":
-                ?>
+    case "pengaturan-absensi":
+        ?>
                     <div class="box">
                         <div class="box-header with-border">
                             <h3 class="box-title fa fa-list"> CONFIGURASI ABSENSI</h3>
@@ -2157,7 +2354,8 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             </div>
                         </div>
                         <div class="box-body">
-                            <button type="button" class="btn btn-info fa fa-plus" data-toggle="modal" data-target="#modal-add-pengaturan">
+                            <button type="button" class="btn btn-info fa fa-plus" data-toggle="modal"
+                                data-target="#modal-add-pengaturan">
                                 Buat Pengaturan
                             </button>
                             <br>
@@ -2170,11 +2368,14 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                                 <span aria-hidden="true">&times;</span></button>
                                             <h4 class="modal-title fa fa-plus"> Konfigurasi Shift</h4>
                                         </div>
-                                        <form role="form" action="<?php echo $aksi . paramEncrypt('module=pengaturan&act=add-pengaturan'); ?>" method="post">
+                                        <form role="form"
+                                            action="<?php echo $aksi . paramEncrypt('module=pengaturan&act=add-pengaturan'); ?>"
+                                            method="post">
                                             <div class="modal-body">
                                                 <div class="form-group">
                                                     <label>Bagian/Unit</label>
-                                                    <select class="form-control select2" name="id_unit" data-placeholder="-Pilih Bagian/Unit-" style="width: 100%;" required>
+                                                    <select class="form-control select2" name="id_unit"
+                                                        data-placeholder="-Pilih Bagian/Unit-" style="width: 100%;" required>
                                                         <option selected="selected" value="">-Pilih Bagian/Unit-</option>
                                                         <?php
                                                         $tm_bagian = bukaquery("select tm_unit.id_unit, tm_unit.nama_unit from tm_unit");
@@ -2184,7 +2385,8 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                                         ?>
                                                     </select>
                                                     <label>Shift</label>
-                                                    <select class="form-control select2" name="id_absensi" data-placeholder="-Pilih Shift-" style="width: 100%;" required>
+                                                    <select class="form-control select2" name="id_absensi"
+                                                        data-placeholder="-Pilih Shift-" style="width: 100%;" required>
                                                         <option selected="selected" value="">-Pilih Shift-</option>
                                                         <?php
                                                         $tm_shift = bukaquery("select tm_shift.id_absensi, tm_shift.nama_shift from tm_shift ");
@@ -2197,7 +2399,8 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                <button type="button" class="btn btn-default"
+                                                    data-dismiss="modal">Close</button>
                                                 <input type="submit" class="btn btn-primary" value="Simpan">
                                             </div>
                                         </form>
@@ -2224,22 +2427,31 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             inner join tm_unit on set_shift.id_unit=tm_unit.id_unit ");
                                         while ($row = fetch_array($tt_shift)) {
                                             $no++;
-                                        ?>
+                                            ?>
                                             <!-- Edit Modal SKP -->
-                                            <div class="modal fade" id="modal-ubah-<?php echo $row['id_shift']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                            <div class="modal fade" id="modal-ubah-<?php echo $row['id_shift']; ?>" tabindex="-1"
+                                                role="dialog" aria-labelledby="myModalLabel">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
-                                                        <form action="<?php echo $aksi . paramEncrypt('module=pengaturan&act=update-pengaturan&id=' . $row['id_shift'] . ''); ?>" method="POST" role="form">
+                                                        <form
+                                                            action="<?php echo $aksi . paramEncrypt('module=pengaturan&act=update-pengaturan&id=' . $row['id_shift'] . ''); ?>"
+                                                            method="POST" role="form">
                                                             <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                <h4 class="modal-title" id="myModalLabel">Update Pengaturan Shift</h4>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close"><span
+                                                                        aria-hidden="true">&times;</span></button>
+                                                                <h4 class="modal-title" id="myModalLabel">Update Pengaturan Shift
+                                                                </h4>
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
                                                                     <div class="form-group">
                                                                         <label class="control-label">Bagian/Unit</label>
-                                                                        <select class="form-control select2" name="id_unit" data-placeholder="-Pilih Nama Unit/Bagian-" style="width: 100%;" required>
-                                                                            <option selected="selected" value="">-Pilih Jenis Peringatan-</option>
+                                                                        <select class="form-control select2" name="id_unit"
+                                                                            data-placeholder="-Pilih Nama Unit/Bagian-"
+                                                                            style="width: 100%;" required>
+                                                                            <option selected="selected" value="">-Pilih Jenis
+                                                                                Peringatan-</option>
                                                                             <?php
                                                                             $tm_unit = bukaquery("select tm_unit.id_unit, tm_unit.nama_unit from tm_unit");
                                                                             while ($tu = fetch_array($tm_unit)) {
@@ -2252,8 +2464,11 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                                                             ?>
                                                                         </select>
                                                                         <label class="control-label">Nama Shift</label>
-                                                                        <select class="form-control select2" name="id_absensi" data-placeholder="-Pilih Nama Shift-" style="width: 100%;" required>
-                                                                            <option selected="selected" value="">-Pilih Nama Shift-</option>
+                                                                        <select class="form-control select2" name="id_absensi"
+                                                                            data-placeholder="-Pilih Nama Shift-"
+                                                                            style="width: 100%;" required>
+                                                                            <option selected="selected" value="">-Pilih Nama Shift-
+                                                                            </option>
                                                                             <?php
                                                                             $tm_shift = bukaquery("select tm_shift.id_absensi, tm_shift.nama_shift from tm_shift");
                                                                             while ($ct = fetch_array($tm_shift)) {
@@ -2270,8 +2485,10 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                                <button type="submit" name="update" class="btn btn-primary">Update</button>
+                                                                <button type="button" class="btn btn-default"
+                                                                    data-dismiss="modal">Close</button>
+                                                                <button type="submit" name="update"
+                                                                    class="btn btn-primary">Update</button>
                                                             </div>
                                                         </form>
                                                     </div>
@@ -2279,23 +2496,31 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                             </div>
                                             <!-- Tutup Edit Modal permintaan -->
                                             <!-- Edit Modal SKP -->
-                                            <div class="modal fade" id="modal-hapus-<?php echo $row['id_shift']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                                            <div class="modal fade" id="modal-hapus-<?php echo $row['id_shift']; ?>" tabindex="-1"
+                                                role="dialog" aria-labelledby="myModalLabel">
                                                 <div class="modal-dialog" role="document">
                                                     <div class="modal-content">
-                                                        <form action="<?php echo $aksi . paramEncrypt('module=pengaturan&act=delete-pengaturan&id=' . $row['id_shift'] . ''); ?>" method="POST" role="form">
+                                                        <form
+                                                            action="<?php echo $aksi . paramEncrypt('module=pengaturan&act=delete-pengaturan&id=' . $row['id_shift'] . ''); ?>"
+                                                            method="POST" role="form">
                                                             <div class="modal-header">
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                                <h4 class="modal-title" id="myModalLabel">Delete Surat Peringatan</h4>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close"><span
+                                                                        aria-hidden="true">&times;</span></button>
+                                                                <h4 class="modal-title" id="myModalLabel">Delete Surat Peringatan
+                                                                </h4>
                                                             </div>
                                                             <div class="modal-body">
                                                                 <div class="form-group">
                                                                     <div class="form-group">
-                                                                        <label>Yakin Anda ingin Menghapus Data ini,klik Tombol Ya? Untuk Menghapusnya</label>
+                                                                        <label>Yakin Anda ingin Menghapus Data ini,klik Tombol Ya?
+                                                                            Untuk Menghapusnya</label>
                                                                     </div>
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                                                <button type="button" class="btn btn-default"
+                                                                    data-dismiss="modal">No</button>
                                                                 <button type="submit" class="btn btn-danger" autofocus>Ya</button>
                                                             </div>
                                                         </form>
@@ -2308,11 +2533,15 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                                 <td><?php echo $row['nama_unit']; ?></td>
                                                 <td><?php echo $row['nama_shift'] ?></td>
                                                 <td>
-                                                    <span data-toggle="modal" data-target="#modal-ubah-<?php echo $row['id_shift']; ?>" title="Ubah" class="btn-xs btn-warning fa fa-edit"></span>
-                                                    <span data-toggle="modal" data-target="#modal-hapus-<?php echo $row['id_shift']; ?>" title="Hapus" class="btn-xs btn-danger fa fa-trash"></span>
+                                                    <span data-toggle="modal"
+                                                        data-target="#modal-ubah-<?php echo $row['id_shift']; ?>" title="Ubah"
+                                                        class="btn-xs btn-warning fa fa-edit"></span>
+                                                    <span data-toggle="modal"
+                                                        data-target="#modal-hapus-<?php echo $row['id_shift']; ?>" title="Hapus"
+                                                        class="btn-xs btn-danger fa fa-trash"></span>
                                                 </td>
                                             </tr>
-                                        <?php
+                                            <?php
                                         }
                                         ?>
                                     </tbody>
@@ -2320,10 +2549,10 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             </div>
                         </div>
                     </div>
-            <?php
-                break;
-        }
-            ?>
+                    <?php
+                    break;
+}
+?>
             <script src="libs/jquery/jquery.min.js"></script>
             <script>
                 var rekap_absensi_pegawai_list_unit_shift_generated = [];
@@ -2344,7 +2573,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                         url: "<?php echo $url_api_absensi; ?>?action=get_list_pegawai_by_idunit&id_unit=" + id_unit,
                         type: "GET",
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             if (response.status == 1) {
 
@@ -2362,7 +2591,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 swal("LIST PEGAWAI ERROR", "", "error");
                             }
                         },
-                        error: function(errorMsg) {
+                        error: function (errorMsg) {
                             console.log("Kode : GETLSTPEGAWAI01. Gagal mengirim permintaan. " + errorMsg.status + "-" + errorMsg.statusText);
                         }
                     });
@@ -2370,11 +2599,19 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
 
                 function get_abesnsi_live_jadwal(button_id) {
 
-                    var date_start = $("#tahun_absensi_start option:selected").val() + "-" + $("#bulan_absensi_start option:selected").val() + "-" + $("#tanggal_absensi_start option:selected").val();
-                    var date_end = $("#tahun_absensi_end option:selected").val() + "-" + $("#bulan_absensi_end option:selected").val() + "-" + $("#tanggal_absensi_end option:selected").val();
+                var date_start = $("#tahun_absensi_start option:selected").val() + "-" + $("#bulan_absensi_start option:selected").val() + "-01";
+                    var date_end = $("#tahun_absensi_start option:selected").val() + "-" + $("#bulan_absensi_start option:selected").val() + "-31";
+                    // var date_start = $("#tahun_absensi_start option:selected").val() + "-" + $("#bulan_absensi_start option:selected").val() + "-" + $("#tanggal_absensi_start option:selected").val();
+                    // var date_end = $("#tahun_absensi_end option:selected").val() + "-" + $("#bulan_absensi_end option:selected").val() + "-" + $("#tanggal_absensi_end option:selected").val();
                     var id_unit = $("#unit_absensi").val();
                     var id_user = $("#pegawai_absensi").val();
                     var total_telat_pulangcepat = 0;
+
+                    console.log(date_start);
+                    console.log(date_end);
+                    console.log(id_unit);
+                    console.log(id_user);
+                    
 
 
 
@@ -2386,7 +2623,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                         url: "<?php echo $url_api_absensi; ?>?action=get_absensi_live_jadwal_by_iduser_idunit_month_year&id_unit=" + id_unit + "&id_user=" + id_user + "&date_start=" + date_start + "&date_end=" + date_end,
                         type: "GET",
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             if (response.status == 1) {
 
@@ -2413,7 +2650,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
 
                             $(button_id).html('<i class="fa fa-search"></i>').prop('disabled', false);
                         },
-                        error: function(errorMsg) {
+                        error: function (errorMsg) {
 
                             $(button_id).html('<i class="fa fa-search"></i>').prop('disabled', false);
                             console.log("Kode : GETABSENSILIVE01. Gagal mengirim permintaan. " + errorMsg.status + "-" + errorMsg.statusText);
@@ -2437,7 +2674,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                         url: "<?php echo $url_api_absensi; ?>?action=get_absensi_live_by_iduser_idunit_month_year&id_unit=" + id_unit + "&id_user=" + id_user + "&date_start=" + date_start + "&date_end=" + date_end,
                         type: "GET",
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             if (response.status == 1) {
 
@@ -2458,7 +2695,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
 
                             $(button_id).html('<i class="fa fa-search"></i>').prop('disabled', false);
                         },
-                        error: function(errorMsg) {
+                        error: function (errorMsg) {
 
                             $(button_id).html('<i class="fa fa-search"></i>').prop('disabled', false);
                             console.log("Kode : GETABSENSILIVE01. Gagal mengirim permintaan. " + errorMsg.status + "-" + errorMsg.statusText);
@@ -2510,7 +2747,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                         type: "GET",
                         url: "<?php echo $url_api_absensi; ?>?action=get_rekapitulasi_absensi_pegawai&month=" + month + "&year=" + year,
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             if (response.status == 1) {
 
@@ -2569,7 +2806,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 $('#btn-generate-rekap-absensi-pegawai').show();
                             }
                         },
-                        error: function(errorMsg) {
+                        error: function (errorMsg) {
 
                             console.log("Kode : REKAPABS01. Gagal mengirim permintaan. " + errorMsg.status + "-" + errorMsg.statusText);
                         }
@@ -2582,7 +2819,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                         type: "GET",
                         url: "<?php echo $url_api_absensi; ?>?action=get_list_unit_rekapitulasi_absensi_pegawai&month=" + month + "&year=" + year,
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             if (response.status == 1) {
                                 $('#rekap-absensi-pegawai-list-unit-table tbody').empty();
@@ -2614,7 +2851,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 console.log("Kode : REKAPABSUNT01. Kode status = 0");
                             }
                         },
-                        error: function(errorMsg) {
+                        error: function (errorMsg) {
 
                             console.log("Kode : REKAPABSUNT01. Gagal mengirim permintaan. " + errorMsg.status + "-" + errorMsg.statusText);
                         }
@@ -2634,7 +2871,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                         type: "GET",
                         url: "<?php echo $url_api_absensi; ?>?action=get_status_unit_rekapitulasi_absensi_pegawai&month=" + month + "&year=" + year,
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             if (response.status == 1) {
 
@@ -2653,7 +2890,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                     var validasi_absen = "<p style='color: " + text_color_validasi_absen + ";'>" + response.data[i]['validasi_absen'] + "</p>";
                                     var opt_tarik_absensi_true = response.data[i]['kasie_response'] == 'Sudah Divalidasi' && response.data[i]['validasi_absen'] != 'Sudah Ditarik' ? 'checked' : ''; // opsi tarik absensi akan aktif apabila sudah divalidasi namun belum ditarik
                                     var opt_tarik_absensi = "<input type='checkbox' id='opt_tarik_absensi' name='opt_tarik_absensi' value='Ya' class='js-switch' " + opt_tarik_absensi_true + " onchange='checkbox_rekap_absensi_pegawai_tariabsen_event(this, `" + id_unit + "`);' /> Ya";
-                                    var btn_select_pegawai = "<button type='button' class='btn btn-xs btn-primary' id='btn_list_pegawai-tarik_absensi-"+id_unit+"' name='btn_list_pegawai-tarik_absensi-"+id_unit+"' onclick='get_status_pegawai_rekapitulasi_absensi_pegawai(`"+id_unit+"`, `"+month+"`, `"+year+"`);'><i class='fa fa-search'></i></button><input id='list_pegawai-tarik_absensi-"+id_unit+"' name='list_pegawai-tarik_absensi-"+id_unit+"' type='hidden'/>";
+                                    var btn_select_pegawai = "<button type='button' class='btn btn-xs btn-primary' id='btn_list_pegawai-tarik_absensi-" + id_unit + "' name='btn_list_pegawai-tarik_absensi-" + id_unit + "' onclick='get_status_pegawai_rekapitulasi_absensi_pegawai(`" + id_unit + "`, `" + month + "`, `" + year + "`);'><i class='fa fa-search'></i></button><input id='list_pegawai-tarik_absensi-" + id_unit + "' name='list_pegawai-tarik_absensi-" + id_unit + "' type='hidden'/>";
 
                                     // jika opsi tarik absen true, masukkan ke list unit yg akan digenerate
                                     if (opt_tarik_absensi_true) rekap_absensi_pegawai_list_unit_shift_generated.push(id_unit);
@@ -2679,7 +2916,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 console.log("Kode : GETSTSUNITABS01. Kode Status = 0");
                             }
                         },
-                        error: function(error) {
+                        error: function (error) {
 
                             swal("Gagal Mengirim Permintaan Lihat Status Absensi Unit", "", "error");
                             $('#btn-generate-rekap-absensi-pegawai').html("Lihat Status Absensi Unit").prop('disabled', false);
@@ -2696,7 +2933,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                         type: "GET",
                         url: "<?php echo $url_api_absensi; ?>?action=get_unit_rekapitulasi_absensi_pegawai&month=" + month + "&year=" + year,
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             if (response.status == 1) {
 
@@ -2721,7 +2958,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 console.log('Kode : GETUNTREKAPABS01. Kode Status = 0');
                             }
                         },
-                        error: function(error) {
+                        error: function (error) {
 
                             console.log('Kode : GETUNTREKAPABS01. Gagal mengirim permintaan. ' + error.status + '-' + error.statusText);
                         }
@@ -2729,46 +2966,46 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                 }
 
                 function get_status_pegawai_rekapitulasi_absensi_pegawai(id_unit, month, year) {
-                    
+
                     swal({
                         // Menambahkan CSS inline di dalam tag style agar SweetAlert menjadi lebar dan tinggi
                         title: '<style>' +
                             '.sweet-alert { width: 45vw !important; height: 45vh !important; margin-left: 0 !important; left: 2.5vw !important; }' +
-                            '.sweet-alert .form-control { height: auto !important; }' + 
+                            '.sweet-alert .form-control { height: auto !important; }' +
                             '</style>' +
                             '<h5>Pilih Pegawai (KOSONGKAN jika ingin semua pegawai)</h5>',
                         text: '<select id="pilih-pegawai" class="form-control" multiple="multiple" style="width:100%"></select>',
                         html: true,
                         showCancelButton: true,
                         confirmButtonText: "Simpan",
-                    }, function() {
-                        
-                        var selectedIDs = $('#pilih-pegawai').val(); 
+                    }, function () {
+
+                        var selectedIDs = $('#pilih-pegawai').val();
 
                         if (!selectedIDs || selectedIDs.length === 0) {
-                            $('#btn_list_pegawai-tarik_absensi-'+id_unit).removeClass('btn-warning').addClass('btn-primary');
-                            $('#list_pegawai-tarik_absensi-'+id_unit).val('');
+                            $('#btn_list_pegawai-tarik_absensi-' + id_unit).removeClass('btn-warning').addClass('btn-primary');
+                            $('#list_pegawai-tarik_absensi-' + id_unit).val('');
                         } else {
-                            $('#btn_list_pegawai-tarik_absensi-'+id_unit).removeClass('btn-primary').addClass('btn-warning');
-                            $('#list_pegawai-tarik_absensi-'+id_unit).val(selectedIDs.join(','));
+                            $('#btn_list_pegawai-tarik_absensi-' + id_unit).removeClass('btn-primary').addClass('btn-warning');
+                            $('#list_pegawai-tarik_absensi-' + id_unit).val(selectedIDs.join(','));
                         }
                     });
 
-                    setTimeout(function() {
+                    setTimeout(function () {
                         $.ajax({
-                            url: '<?= $url_api_absensi; ?>?action=get_pegawai_by_idunit_shiftm&id_unit='+id_unit+'&month='+month+'&year='+year,
+                            url: '<?= $url_api_absensi; ?>?action=get_pegawai_by_idunit_shiftm&id_unit= ' +id_unit +'&month= ' +month +'&year= ' +year,
                             type: 'GET',
                             dataType: 'JSON',
-                            success: function(response) {
+                            success: function (response) {
 
-                                if(response.status == 0) {
+                                if (response.status == 0) {
                                     $('#pilih-pegawai').select2({
                                         dropdownParent: $(".sweet-alert"),
                                         placeholder: "Data Pegawai tidak ditemukan",
                                         data: []
                                     });
                                 } else {
-                                    const dataPegawai = $.map(response.data, function(item) {
+                                    const dataPegawai = $.map(response.data, function (item) {
                                         return {
                                             id: item.id_user,
                                             text: item.nama_pegawai
@@ -2782,7 +3019,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                     });
                                 }
                             },
-                            error: function(xhr, status, error) {
+                            error: function (xhr, status, error) {
                                 console.log('ERROR get_status_pegawai_rekapitulasi_absensi_pegawai. ', error);
                                 $('#pilih-pegawai').select2({
                                     dropdownParent: $(".sweet-alert"),
@@ -2812,12 +3049,12 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             year: year
                         },
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             swal(response.message, "", "success");
                             $("#rekap-absensi-update-button").html('<i class="fa fa-send">&nbsp;&nbsp;&nbsp;PERBARUI</i>').css('pointer-events', 'auto');
                         },
-                        error: function(errorMsg) {
+                        error: function (errorMsg) {
 
                             $("#rekap-absensi-update-button").html('<i class="fa fa-send">&nbsp;&nbsp;&nbsp;PERBARUI</i>').css('pointer-events', 'auto');
                             swal("Update Rekapitulasi Absensi Pegawai Gagal", "", "error");
@@ -2844,7 +3081,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             year: year,
                             list_unit_serialized: list_unit_serialized
                         },
-                        success: function(response) {
+                        success: function (response) {
 
                             if (response.status == 1) {
 
@@ -2865,7 +3102,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 console.log('get_status_duplikat_absensi_pegawai. count =  999');
                             }
                         },
-                        error: function(error) {
+                        error: function (error) {
 
                             $('#btn-generate-rekap-absensi-pegawai').html("Lihat Status Absensi Unit").prop('disabled', false);
                             swal("Permintaan Pemeriksaan Absensi Duplikat Gagal", "", "error");
@@ -2882,7 +3119,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                     var year = $('#rekap-absensi-pegawai-select-year').val();
                     var list_unit_serialized = JSON.stringify(rekap_absensi_pegawai_list_unit_shift_generated);
                     const list_user_serialized = JSON.stringify(rekap_absensi_pegawai_list_unit_shift_generated.map(item => {
-                        const list_user = rekapitulasi_absensi_pegawai_table.$('#list_pegawai-tarik_absensi-'+item).val();
+                        const list_user = rekapitulasi_absensi_pegawai_table.$('#list_pegawai-tarik_absensi-' + item).val();
                         return {
                             id_unit: item,
                             list_user: list_user,
@@ -2899,11 +3136,11 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             list_unit_serialized: list_unit_serialized,
                             list_pegawai_serialized: list_user_serialized
                         },
-                        success: function(response) {
+                        success: function (response) {
                             console.log('delete_rekap_detail_absensi_pegawai success');
                             generate_listuser_rekapirulasi_absensi_pegawai_shift();
                         },
-                        error: function(error) {
+                        error: function (error) {
 
                             $('#btn-generate-rekap-absensi-pegawai').html("Lihat Status Absensi Unit").prop('disabled', false);
                             swal("Permintaan Pembersihan Absensi Duplikat Gagal", "", "error");
@@ -2927,13 +3164,13 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             year: year,
                             month: month
                         },
-                        success: function(response) {
+                        success: function (response) {
 
                             console.log('delete_rekap_detail_absensi_pegawai_button success');
                             $('#btn-delete-absensi-pegawai').html("Hapus Rekapitulasi Absensi").prop('disabled', false);
                             rekap_absensi_pegawai_search_periode();
                         },
-                        error: function(error) {
+                        error: function (error) {
 
                             $('#btn-delete-absensi-pegawai').html("Hapus Rekapitulasi Absensi").prop('disabled', false);
                             swal("Permintaan Penghapusan Absensi", "", "error");
@@ -2965,7 +3202,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             year: year,
                             list_unit_serialized: list_unit_serialized
                         },
-                        success: function(response) {
+                        success: function (response) {
 
                             console.log('generate_listuser_rekapirulasi_absensi_pegawai_shift success. id_unit.length ' + response.list_id_unit.length + ' id_user.length ' + response.list_id_user.length + ' id_session ' + response.id_session);
 
@@ -2987,9 +3224,9 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
 
                                     // jika kosong, berarti user mau tarik semua pegawai. ambil apa adanya dari server
                                     // jika tidak kosong, kita filter yg ada di kedua sisi
-                                    if(rekapitulasi_absensi_pegawai_table.$('#list_pegawai-tarik_absensi-'+element).val() != '') {
+                                    if (rekapitulasi_absensi_pegawai_table.$('#list_pegawai-tarik_absensi-' + element).val() != '') {
 
-                                        const list_user = rekapitulasi_absensi_pegawai_table.$('#list_pegawai-tarik_absensi-'+element).val().split(",");
+                                        const list_user = rekapitulasi_absensi_pegawai_table.$('#list_pegawai-tarik_absensi-' + element).val().split(",");
                                         // console.log('list_user ');
                                         // console.log(list_user);
                                         // rekap_absensi_pegawai_list_user_shift_generated = response.list_id_user.filter(item => list_user.includes(item.id_user));
@@ -2997,7 +3234,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                         // console.log('rekap a: ');
                                         // console.log(rekap_absensi_pegawai_list_user_shift_generated);
                                     } else {
-                                        
+
                                         rekap_absensi_pegawai_list_user_shift_generated = response.list_id_user;
                                     }
                                 });
@@ -3010,7 +3247,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             }
 
                         },
-                        error: function(error) {
+                        error: function (error) {
 
                             $('#btn-generate-rekap-absensi-pegawai').html("Lihat Status Absensi Unit").prop('disabled', false);
                             swal("Permintaan Generate List Pegawai Gagal", "", "error");
@@ -3029,7 +3266,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                     var id_kepegawaian = $('#rekap-absensi-pegawai-id_kepegawaian').val();
 
                     // jika unit nya adalah UNT-000003 (spesialis). hapus dan skip saja. biar nanti dicek lewat generate_detail_absensi_pegawai_shift
-                    if(rekap_absensi_pegawai_list_user_shift_generated[0]['id_unit'] == 'UNT-000003') {
+                    if (rekap_absensi_pegawai_list_user_shift_generated[0]['id_unit'] == 'UNT-000003') {
 
                         rekap_absensi_pegawai_list_user_shift_generated.splice(0, 1);
                         generate_rekapitulasi_absensi_pegawai_shift();
@@ -3051,7 +3288,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 id_unit: rekap_absensi_pegawai_list_user_shift_generated[0]['id_unit'],
                                 id_session: rekap_absensi_pegawai_id_session
                             },
-                            success: function(response) {
+                            success: function (response) {
 
                                 // hapus list_id_uesr yang baru dieksekusi.
                                 rekap_absensi_pegawai_list_user_shift_generated.splice(0, 1);
@@ -3060,7 +3297,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 if (rekap_absensi_pegawai_list_user_shift_generated.length > 0) generate_rekapitulasi_absensi_pegawai_shift();
                                 else generate_detail_absensi_pegawai_shift();
                             },
-                            error: function(error) {
+                            error: function (error) {
 
                                 $('#btn-generate-rekap-absensi-pegawai').html("Lihat Status Absensi Unit").prop('disabled', false);
                                 swal("Permintaan Generate Absensi Shift Gagal", "", "error");
@@ -3078,7 +3315,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                     var month = remove_leading_zero($('#rekap-absensi-pegawai-select-month').val());
                     var year = $('#rekap-absensi-pegawai-select-year').val();
                     var id_kepegawaian = $('#rekap-absensi-pegawai-id_kepegawaian').val();
-                    const list_pegawai = rekapitulasi_absensi_pegawai_table.$('#list_pegawai-tarik_absensi-'+rekap_absensi_pegawai_list_unit_shift_generated[0]).val();
+                    const list_pegawai = rekapitulasi_absensi_pegawai_table.$('#list_pegawai-tarik_absensi-' + rekap_absensi_pegawai_list_unit_shift_generated[0]).val();
                     console.log('generate_detail_absensi_pegawai_shift month ' + month);
                     console.log('generate_detail_absensi_pegawai_shift year ' + year);
                     console.log('generate_detail_absensi_pegawai_shift id_kepegawaian ' + id_kepegawaian);
@@ -3096,7 +3333,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             id_unit: rekap_absensi_pegawai_list_unit_shift_generated[0],
                             list_pegawai: list_pegawai
                         },
-                        success: function(response) {
+                        success: function (response) {
 
                             if (response.status == 1) {
 
@@ -3115,7 +3352,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 console.log("Kode : GNRTDETAILABS01. Kode Status = 0.");
                             }
                         },
-                        error: function(errorMsg) {
+                        error: function (errorMsg) {
 
                             $('#btn-generate-rekap-absensi-pegawai').html("Lihat Status Absensi Unit").prop('disabled', false);
                             swal("Generate Detail Shift Gagal", "", "error");
@@ -3141,13 +3378,13 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             year: year,
                             id_kepegawaian: id_kepegawaian
                         },
-                        success: function(response) {
+                        success: function (response) {
 
                             console.log('generate_rekapitulasi_absensi_pegawai_nonshift success');
 
                             generate_detail_absensi_pegawai_nonshift();
                         },
-                        error: function(error) {
+                        error: function (error) {
 
                             $('#btn-generate-rekap-absensi-pegawai').html("Lihat Status Absensi Unit").prop('disabled', false);
                             swal("Generate Rekapitulasi Non Shift Gagal", "", "error");
@@ -3173,12 +3410,12 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             year: year,
                             id_kepegawaian: id_kepegawaian
                         },
-                        success: function(response) {
+                        success: function (response) {
 
                             console.log('generate_detail_absensi_pegawai_nonshift success');
                             insert_log_absensi_pegawai();
                         },
-                        error: function(error) {
+                        error: function (error) {
 
                             $('#btn-generate-rekap-absensi-pegawai').html("Lihat Status Absensi Unit").prop('disabled', false);
                             swal("Generate Detail Non Shift Gagal", "", "error");
@@ -3205,11 +3442,11 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             month: month,
                             year: year
                         },
-                        success: function(response) {
+                        success: function (response) {
 
                             insert_log_absensi_pegawai();
                         },
-                        error: function(errorMsg) {
+                        error: function (errorMsg) {
 
                             $('#btn-generate-rekap-absensi-pegawai').html('Lihat Status Absensi Unit').prop('disabled', false);
                             swal('Generate Absensi Dokter Spesialis Gagal', '', 'error');
@@ -3237,7 +3474,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             id_user: rekap_absensi_pegawai_list_user_shift_generated[0]
                         },
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             // hapus list id_user yg baru dieksekusi
                             rekap_absensi_pegawai_list_user_shift_generated.splice(0, 1);
@@ -3256,7 +3493,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
 
 
                         },
-                        error: function(error) {
+                        error: function (error) {
 
                             $(button_id).html("Generate Absensi Unit").prop('disabled', false);
                             swal("Generate Detail Absensi Per Unit Error", "", "error");
@@ -3282,13 +3519,13 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             id_kepegawaian: id_kepegawaian
                         },
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             console.log('insert_log_absensi_pegawai success');
                             $('#btn-generate-rekap-absensi-pegawai').html("Lihat Status Absensi Unit").prop('disabled', false);
                             rekap_cuti();
                         },
-                        error: function(error) {
+                        error: function (error) {
 
                             $('#btn-generate-rekap-absensi-pegawai').html("Lihat Status Absensi Unit").prop('disabled', false);
                             swal("Insert Log Absensi Pegawai Gagal", "", "error");
@@ -3305,7 +3542,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                     const year = $('#rekap-absensi-pegawai-select-year').val();
                     const id_unit = rekap_absensi_pegawai_list_unit_shift_generated_2[0];
 
-                    console.log("rekap absen unit "+id_unit);
+                    console.log("rekap absen unit " + id_unit);
                     $.ajax({
                         type: "POST",
                         url: "<?php echo $url_api_absensi; ?>?action=rekap_cuti",
@@ -3315,14 +3552,14 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             id_unit: id_unit
                         },
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
-                            if(response.status == 1) {
+                            if (response.status == 1) {
                                 // hapus id_unit yang baru dieksekusi
                                 rekap_absensi_pegawai_list_unit_shift_generated_2.splice(0, 1);
 
                                 // apabila list masih ada, ulangi rekap_cuti. jika habis, lanjut proses selanjutnya
-                                if(rekap_absensi_pegawai_list_unit_shift_generated_2.length > 0) {
+                                if (rekap_absensi_pegawai_list_unit_shift_generated_2.length > 0) {
 
                                     rekap_cuti();
                                 } else {
@@ -3338,7 +3575,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 console.log("Kode : REKAPCUTI01. Kode Status = 0.");
                             }
                         },
-                        error: function(error) {
+                        error: function (error) {
 
                             $('#btn-generate-rekap-absensi-pegawai').html("Lihat Status Absensi Unit").prop('disabled', false);
                             swal("Rekap Cuti Gagal", "", "error");
@@ -3416,7 +3653,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                         type: "GET",
                         url: "<?php echo $url_api_absensi; ?>?action=get_options_edit_shift_detail_absensi_pegawai",
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             if (response.status == 1) {
 
@@ -3495,7 +3732,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 console.log("Kode : MDLPUTABSDTL1. Kode status = 0");
                             }
                         },
-                        error: function(errorMsg) {
+                        error: function (errorMsg) {
 
                             console.log("Kode : MDLPUTABSDTL1. Gagal mengirim permintaan. " + errorMsg.status + "-" + errorMsg.statusText);
                         }
@@ -3508,7 +3745,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                         type: "GET",
                         url: "<?php echo $url_api_absensi; ?>?action=get_log_kehadiran_by_logfinger_date&log_finger=" + log_finger + "&date=" + date + "&id_unit=" + id_unit + "&id_user=" + id_user,
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             if (response.status == 1) {
 
@@ -3548,7 +3785,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 console.log("Kode : MDLPUTABSMSK02. Kode status = 0");
                             }
                         },
-                        error: function(errorMsg) {
+                        error: function (errorMsg) {
 
                             swal("Modal Absensi Masuk Pegawai Gagal ", "Kode : MDLPUTABSMSK01. Gagal mengirim permitaan", "error");
                             console.log("Kode : MDLPUTABSMSK01. Gagal mengirim permintaan. " + errorMsg.status + "-" + errorMsg.statusText);
@@ -3562,7 +3799,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                         type: "GET",
                         url: "<?php echo $url_api_absensi; ?>?action=get_log_kehadiran_by_logfinger_date&log_finger=" + log_finger + "&date=" + date + "&id_unit=" + id_unit + "&id_user=" + id_user,
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             if (response.status == 1) {
 
@@ -3602,7 +3839,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 console.log("Kode : MDLPUTABSPLG02. Kode status = 0");
                             }
                         },
-                        error: function(errorMsg) {
+                        error: function (errorMsg) {
 
                             swal("Modal Absensi Pulang Pegawai Gagal ", "Kode : MDLPUTABSPLG01. Gagal mengirim permitaan", "error");
                             console.log("Kode : MDLPUTABSPLG01. Gagal mengirim permintaan. " + errorMsg.status + "-" + errorMsg.statusText);
@@ -3616,7 +3853,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                         type: "GET",
                         url: "<?php echo $url_api_absensi; ?>?action=get_log_kehadiran_by_logfinger_date&log_finger=" + log_finger + "&date=" + date + "&id_unit=" + id_unit + "&id_user=" + id_user,
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             if (response.status == 1) {
 
@@ -3660,7 +3897,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 console.log("Kode : MDLDTLTELAT01. Kode status = 0");
                             }
                         },
-                        error: function(errorMsg) {
+                        error: function (errorMsg) {
 
                             swal("Modal Absensi Masuk Pegawai Gagal ", "Kode : MDLPUTABSMSK01. Gagal mengirim permitaan", "error");
                             console.log("Kode : MDLPUTABSMSK01. Gagal mengirim permintaan. " + errorMsg.status + "-" + errorMsg.statusText);
@@ -3674,7 +3911,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                         type: "GET",
                         url: "<?php echo $url_api_absensi; ?>?action=get_log_kehadiran_by_logfinger_date&log_finger=" + log_finger + "&date=" + date + "&id_unit=" + id_unit + "&id_user=" + id_user,
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             if (response.status == 1) {
 
@@ -3717,7 +3954,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                                 console.log("Kode : MDLPUTABSPLG02. Kode status = 0");
                             }
                         },
-                        error: function(errorMsg) {
+                        error: function (errorMsg) {
 
                             swal("Modal Absensi Pulang Pegawai Gagal ", "Kode : MDLPUTABSPLG01. Gagal mengirim permitaan", "error");
                             console.log("Kode : MDLPUTABSPLG01. Gagal mengirim permintaan. " + errorMsg.status + "-" + errorMsg.statusText);
@@ -3747,17 +3984,17 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             absensi_masuk_selected: absensi_masuk_selected
                         },
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             console.log(response);
                             swal({
                                 title: "Perbarui Absensi Masuk Pegawai Berhasil",
                                 type: "success"
-                            }, function() {
+                            }, function () {
                                 window.location.reload();
                             });
                         },
-                        error: function(errorMsg) {
+                        error: function (errorMsg) {
 
                             swal("Perbarui Absensi Masuk Pegawai Gagal", "Kode : PUTABSMSK01", "error");
                             console.log("Kode : PUTABSMSK01. Gagal mengirim permitaan. " + errorMsg.status + "-" + errorMsg.statusText);
@@ -3787,17 +4024,17 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             absensi_pulang_selected: absensi_pulang_selected
                         },
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             console.log(response);
                             swal({
                                 title: "Perbarui Absensi Pulang Pegawai Berhasil",
                                 type: "success"
-                            }, function() {
+                            }, function () {
                                 window.location.reload();
                             });
                         },
-                        error: function(errorMsg) {
+                        error: function (errorMsg) {
 
                             swal("Perbarui Absensi Pulang Pegawai Gagal", "Kode : PUTABSPLG01", "error");
                             console.log("Kode : PUTABSPLG01. Gagal mengirim permitaan. " + errorMsg.status + "-" + errorMsg.statusText);
@@ -3834,18 +4071,18 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             keterangan: keterangan
                         },
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             $(button_id).html("Perbarui").prop('disabled', false);
                             console.log(response);
                             swal({
                                 title: "Perbarui Keterlambatan Pegawai Berhasil",
                                 type: "success"
-                            }, function() {
+                            }, function () {
                                 window.location.reload();
                             });
                         },
-                        error: function(errorMsg) {
+                        error: function (errorMsg) {
 
                             $(button_id).html("Perbarui").prop('disabled', false);
                             swal("Perbarui Keterlambatan Pegawai Gagal", "Kode : PUTTELAT01", "error");
@@ -3883,18 +4120,18 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             keterangan: keterangan
                         },
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             $(button_id).html("Perbarui").prop('disabled', false);
                             console.log(response);
                             swal({
                                 title: "Perbarui Pulang Cepat Pegawai Berhasil",
                                 type: "success"
-                            }, function() {
+                            }, function () {
                                 window.location.reload();
                             });
                         },
-                        error: function(errorMsg) {
+                        error: function (errorMsg) {
 
                             $(button_id).html("Perbarui").prop('disabled', false);
                             swal("Perbarui Pulang Cepat Pegawai Gagal", "Kode : PUTPLNGCPT01", "error");
@@ -3936,18 +4173,18 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                             is_libur: is_libur
                         },
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             $(button_id).html("Perbarui").prop('disabled', false);
                             console.log(response);
                             swal({
                                 title: "Perbarui Shift Pegawai Berhasil",
                                 type: "success"
-                            }, function() {
+                            }, function () {
                                 window.location.reload();
                             });
                         },
-                        error: function(errorMsg) {
+                        error: function (errorMsg) {
                             $(button_id).html("Perbarui").prop('disabled', false);
                             swal("Perbarui Shift Pegawai Gagal", "", "error");
                             console.log("Kode : PUTABSDTL01. Gagal mengirim permitaan. " + errorMsg.status + "-" + errorMsg.statusText);
@@ -3970,7 +4207,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                         type: "GET",
                         url: "<?php echo $url_api_master_data; ?>?action=get_absensi_unit&id_unit=" + id_unit + "&month=" + month + "&year=" + year,
                         dataType: "JSON",
-                        success: function(response) {
+                        success: function (response) {
 
                             if (response.status == 1) {
 
@@ -4008,7 +4245,7 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
 
                             $('#lihat-absensi-unit_btn').html('<i class="fa fa-search"></i>&nbsp;&nbsp;Cari').attr('disabled', false);
                         },
-                        error: function(error) {
+                        error: function (error) {
 
                             console.log("Kode : GETABSUNIT01. Gagal mengirim permintaan. " + error.status + "-" + error.statusText);
                         }
@@ -4016,7 +4253,9 @@ switch ((isset($url['act']) ? $url['act'] : '')) {
                 }
                 // end fungsi untuk lihat-absensi-unit
 
-                $(document).ready(function() {
+                $(document).ready(function () {
+
+
 
                     absensi_live_jadwal_table = $('#absensi_pegawai_live_jadwal').DataTable({
                         "lengthMenu": [
