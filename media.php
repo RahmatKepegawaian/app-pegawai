@@ -36,6 +36,7 @@ $spv = isset($_SESSION['superuser']) ? $_SESSION['superuser'] : null;
 $nip = isset($_SESSION['nip']) ? $_SESSION['nip'] : null;
 $idlevel = isset($_SESSION['id_level']) ? $_SESSION['id_level'] : null;
 $status_pegawai = getOne("select status_pegawai from tm_pegawai where nip='$nip'");
+$log_finger = getOne("select log_finger from tm_pegawai where nip='$nip'");
 $id_user = getOne("select tm_pegawai.id_user from tm_pegawai where nip='$nip'");
 $nama_pegawai = getOne("select tm_pegawai.nama_pegawai from tm_pegawai where nip='$nip'");
 $id_unit = getOne("select tm_pegawai.id_unit from tm_pegawai where nip='$nip'");

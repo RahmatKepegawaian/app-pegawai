@@ -313,11 +313,11 @@
             }
             if ($hak_akses['menu_val_kasatpel'] == '1' or $hak_akses['menu_val_kasie'] == '1') {
             ?>
-                <li>
+                <!-- <li>
                     <a href="?<?php echo paramEncrypt('module=validasi-pegawai&act=list-validasi-pjlp'); ?>">
                         <i class="fa fa-sort-numeric-asc"></i> <span>Penilaian PJLP </span>
                     </a>
-                </li>
+                </li> -->
             <?php
             }
             ?>
