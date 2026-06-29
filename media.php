@@ -21,9 +21,16 @@ $cur_tgl = TanggalSekarang();
 $tgl = TanggalAkhirBulanKemarin();
 $bln_sebelumnya = getOne("select a.enable_hitung_absensi_akhirtahun from setup a") == '1' ? '12' : FormatTgl('m', $tgl);
 $thn = FormatTgl('Y', $tgl);
+//tahun dan bulan kemarin
+$tgl = TanggalAkhirBulanKemarin();
+$bln_sebelumnya = getOne("select a.enable_hitung_absensi_akhirtahun from setup a") == '1' ? '12' : date('m') - 1;
+$thn_sebelumnya = $bln_sebelumnya == '12' ? date('Y') - 1 : date('Y');
+$thn = FormatTgl('Y', $tgl);
 //tahun dan bulan berjalan
 $thn_now = date('Y');
 $bln_now = date('m');
+$bln_setelahnya = $bln_now == '12' ? '1' : $bln_now + 1;
+$thn_setelahnya = $bln_now == '12' ? $thn_now + 1 : $thn_now;
 //ambil session dan diganti ke variabel
 $spv = isset($_SESSION['superuser']) ? $_SESSION['superuser'] : null;
 $nip = isset($_SESSION['nip']) ? $_SESSION['nip'] : null;
@@ -1725,6 +1732,159 @@ $alert = isset($url['alert']) ? $url['alert'] : null;
 
                 /* initialize the calendar
                  -----------------------------------------------------------------*/
+                <?php
+                $list_agenda = [];
+
+                $sql_libur_raya =  bukaquery("
+                    SELECT a.tanggal, a.keterangan
+                    FROM tm_hari_raya AS a
+                    WHERE (YEAR(a.tanggal) = '".$thn_now."' AND MONTH(a.tanggal) = '".$bln_now."')
+                        OR (YEAR(a.tanggal) = '".$thn_sebelumnya."' AND MONTH(a.tanggal) = '".$bln_sebelumnya."')
+                        OR (YEAR(a.tanggal) = '".$thn_setelahnya."' AND MONTH(a.tanggal) = '".$bln_setelahnya."')
+                    UNION ALL
+                    SELECT a.tanggal, a.keterangan
+                    FROM tm_hari_libur AS a
+                    WHERE (YEAR(a.tanggal) = '".$thn_now."' AND MONTH(a.tanggal) = '".$bln_now."')
+                        OR (YEAR(a.tanggal) = '".$thn_sebelumnya."' AND MONTH(a.tanggal) = '".$bln_sebelumnya."')
+                        OR (YEAR(a.tanggal) = '".$thn_setelahnya."' AND MONTH(a.tanggal) = '".$bln_setelahnya."')
+                ");
+                while ($ag = fetch_array($sql_libur_raya)) {
+                    $list_agenda[] = [
+                        title => $ag['keterangan'],
+                        start => $ag['tanggal'],
+                        backgroundColor => 'dimgray',
+                        borderColor => '#f56954'
+                    ];
+                }
+
+                $sql_agenda =  bukaquery("SELECT tanggal, kegiatan from tt_agenda");
+                while ($ag = fetch_array($sql_agenda)) {
+                    $list_agenda[] = [
+                        title => $ag['kegiatan'],
+                        start => $ag['tanggal'],
+                        backgroundColor => 'bluelight',
+                        borderColor => '#f56954'
+                    ];
+                }
+
+                $sql_finger = bukaquery("
+                    SELECT a.`user`, MIN(a.tanggal) AS tanggal
+                    FROM log AS a
+                    WHERE a.user = '".$log_finger."'
+                        AND (
+                            (YEAR(a.tanggal) = '".$thn_now."' AND MONTH(a.tanggal) = '".$bln_now."')
+                            OR (YEAR(a.tanggal) = '".$thn_sebelumnya."' AND MONTH(a.tanggal) = '".$bln_sebelumnya."')
+                            OR (YEAR(a.tanggal) = '".$thn_setelahnya."' AND MONTH(a.tanggal) = '".$bln_setelahnya."')
+                        )
+                    GROUP BY a.`user`, DATE(a.tanggal)
+                    UNION
+                    SELECT a.`user`, MAX(a.tanggal) AS tanggal
+                    FROM log AS a
+                    WHERE a.user = '".$log_finger."'
+                        AND (
+                            (YEAR(a.tanggal) = '".$thn_now."' AND MONTH(a.tanggal) = '".$bln_now."')
+                            OR (YEAR(a.tanggal) = '".$thn_sebelumnya."' AND MONTH(a.tanggal) = '".$bln_sebelumnya."')
+                            OR (YEAR(a.tanggal) = '".$thn_setelahnya."' AND MONTH(a.tanggal) = '".$bln_setelahnya."')
+                        )
+                    GROUP BY a.`user`, DATE(a.tanggal)
+                    ORDER BY tanggal ASC;
+                ");
+                while ($ag = fetch_array($sql_finger)) {
+                    $list_agenda[] = [
+                        title => '.'.FormatTgl('H:i', $ag['tanggal']).'.',
+                        start => FormatTgl('Y-m-d', $ag['tanggal']),
+                        backgroundColor => 'bluelight',
+                        borderColor => '#f56954'
+                    ];
+                }
+
+                $sql_shift = bukaquery("
+                    SELECT a.date, b.jam_masuk, b.jam_pulang
+                    FROM tm_jadwalpegawai_shift_m AS a
+                        INNER JOIN tm_shift AS b ON a.id_absensi = b.id_absensi
+                    WHERE a.id_user = '".$id_user."'
+                        AND (
+                            (a.`month` = '".$bln_now."' AND a.`year` = '".$thn_now."')
+                            OR (a.`month` = '".$bln_sebelumnya."' AND a.`year` = '".$thn_sebelumnya."')
+                            OR (a.`month` = '".$bln_setelahnya."' AND a.`year` = '".$thn_setelahnya."')
+                        )
+                ");
+                while ($ag = fetch_array($sql_shift)) {
+                    $list_agenda[] = [
+                        title => FormatTgl('H:i', $ag['jam_masuk']).'-'.FormatTgl('H:i', $ag['jam_pulang']),
+                        start => $ag['date'],
+                        backgroundColor => 'green',
+                        borderColor => '#f56954'
+                    ];
+                }                
+
+                $sql_absensi = bukaquery("
+                    SELECT
+                        a.date, b.nama_ketidakhadiran, a.keterlambatan, a.pulang_cepat
+                    FROM tm_jadwalpegawai_absensi_detail AS a
+                        LEFT JOIN tm_shift_ketidakhadiran AS b ON a.id_ketidakhadiran = b.id_ketidakhadiran
+                    WHERE a.id_user = '".$id_user."'
+                        AND (
+                            (a.`month` = '".$bln_now."' AND a.`year` = '".$thn_now."')
+                            OR (a.`month` = '".$bln_sebelumnya."' AND a.`year` = '".$thn_sebelumnya."')
+                        )
+                        AND (
+                            a.keterlambatan <> '0'
+                            OR a.pulang_cepat <> '0'
+                            OR a.id_ketidakhadiran = 'AKT-000001'
+                        )
+                ");
+                while ($ag = fetch_array($sql_absensi)) {
+                    if($ag['nama_ketidakhadiran'] !== null) {
+                        $list_agenda[] = [
+                            title => $ag['nama_ketidakhadiran'],
+                            start => $ag['date'],
+                            backgroundColor => 'red',
+                            borderColor => '#f56954'
+                        ];
+                    }
+                    if($ag['keterlambatan'] !== '0') {
+                        $list_agenda[] = [
+                            title => 'TELAT '.$ag['keterlambatan'].'min',
+                            start => $ag['date'],
+                            backgroundColor => 'red',
+                            borderColor => '#f56954'
+                        ];
+                    }
+                    if($ag['pulang_cepat'] !== '0') {
+                        $list_agenda[] = [
+                            title => 'PULANGCEPAT '.$ag['pulang_cepat'].'min',
+                            start => $ag['date'],
+                            backgroundColor => 'red', 
+                            borderColor => '#f56954'
+                        ];
+                    }
+                }
+                $sql_cuti = bukaquery("
+                    SELECT
+                        b.desc_ketidakhadiran, c.tanggal
+                    FROM tm_cuti  AS a
+                        INNER JOIN tm_shift_ketidakhadiran AS b ON a.id_ketidakhadiran = b.id_ketidakhadiran
+                        INNER JOIN tm_hari_cuti AS c ON a.id_cuti = c.id_cuti
+                    WHERE a.id_user = '".$id_user."'
+                    AND a.aktif = '1'
+                    AND (
+                        (MONTH(c.tanggal) = '".$bln_now."' AND YEAR(c.tanggal) = '".$thn_now."')
+                        OR (MONTH(c.tanggal) = '".$bln_sebelumnya."' AND YEAR(c.tanggal) = '".$thn_sebelumnya."')
+                        OR (MONTH(c.tanggal) = '".$bln_setelahnya."' AND YEAR(c.tanggal) = '".$thn_setelahnya."')
+                    )
+                ");
+                while ($ag = fetch_array($sql_cuti)) {
+                    if($ag['desc_ketidakhadiran'] !== null) {
+                        $list_agenda[] = [
+                            title => $ag['desc_ketidakhadiran'],
+                            start => $ag['tanggal'],
+                            backgroundColor => 'orange',
+                            borderColor => '#f56954'
+                        ];
+                    }
+                }
+                ?>
                 //Date for the calendar events (dummy data)
                 var date = new Date()
                 var d = date.getDate(),
@@ -1743,23 +1903,16 @@ $alert = isset($url['alert']) ? $url['alert'] : null;
                         day: 'day'
                     },
                     //Random default events
-                    events: [
-                        <?php
-                        function limit_words($string, $word_limit)
-                        {
-                            $words = explode(" ", $string);
-                            return implode(" ", array_splice($words, 0, $word_limit));
-                        }
-                        $sql_agenda =  bukaquery("SELECT tanggal, kegiatan from tt_agenda");
-                        while ($ag = fetch_array($sql_agenda)) {
-                        ?>, {
-                                title: '<?php echo $ag['kegiatan']; ?>',
-                                start: '<?php echo $ag['tanggal']; ?>',
-                                backgroundColor: 'bluelight', //red
-                                borderColor: '#f56954' //red
-                            },
-                        <?php } ?>
-                    ],
+                    events: <?= json_encode($list_agenda); ?>,
+                    eventOrder: function(a, b) {
+                        // Ambil panjang karakter dari title masing-masing event
+                        let lengthA = a.title ? a.title.length : 0;
+                        let lengthB = b.title ? b.title.length : 0;
+
+                        // Urutkan secara Descending (paling panjang di atas)
+                        // Jika b.length > a.length, return nilai positif (b naik ke atas a)
+                        return lengthB - lengthA; 
+                    }
                 })
 
                 /* ADDING EVENTS */
