@@ -602,7 +602,7 @@
                     }
                 }
                 ?>
-                <?php if ($hak_akses['menu_keuangan'] == '1' or $superuser != '') { ?>
+                <?php if ($hak_akses['menu_keuangan'] == '1') { ?>
                     <li class="treeview">
                         <a href="#"><i class="fa fa-dollar"></i> Gaji
                             <span class="pull-right-container">
