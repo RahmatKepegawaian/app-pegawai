@@ -2216,14 +2216,10 @@ if ($cek_hak_akses['menu_val_pj'] == '1' OR $cek_hak_akses['menu_val_kasatpel'] 
                                         <div class="center-block"> 
                                             <center>
                                                 <?php
-                                                if ($row['foto'] == '-' OR $row['foto'] == '') {
-                                                    if ($row['jk'] == 'L') {
-                                                        $foto = 'img/laki.png';
-                                                    } else {
-                                                        $foto = 'img/perempuan.png';
-                                                    }
+                                                if ($row['jk'] == 'L') {
+                                                    $foto = 'img/laki.png';
                                                 } else {
-                                                    $foto = "img/" . $row['foto'];
+                                                    $foto = 'img/perempuan.png';
                                                 }
                                                 ?>
                                                 <!--<img src="<?php // echo $foto;                                           ?>" style="align:center" class="img-rounded" width="250" height="250" alt="" >--> 
