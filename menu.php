@@ -386,19 +386,19 @@
                             <li><a href="?<?php echo paramEncrypt('module=master-data&act=list-rkk-pegawai-non-pns'); ?>"><i class="fa fa-circle-o"></i> RKK</a></li>
                         </ul>
                     </li>
-                    <!-- <li class="treeview">
+                    <li class="treeview">
                         <a href="#"><i class="fa fa-edit"></i> Form Pegawai
                             <span class="pull-right-container">
                                 <i class="fa fa-angle-left pull-right"></i>
                             </span>
                         </a>
                         <ul class="treeview-menu">
-                            <li><a href="?<?php echo paramEncrypt('module=form-surat-peringatan&act=list-data-form-sp'); ?>"><i class="fa fa-circle-o"></i> Form SP/HUKDIS</a></li>
+                            <!-- <li><a href="?<?php echo paramEncrypt('module=form-surat-peringatan&act=list-data-form-sp'); ?>"><i class="fa fa-circle-o"></i> Form SP/HUKDIS</a></li> -->
                             <li><a href="?<?php echo paramEncrypt('module=master-data&act=list-master-data-hari-kerja'); ?>"><i class="fa fa-circle-o"></i> Form Hari Kerja</a></li>
-                            <li><a href="?<?php echo paramEncrypt('module=master-data&act=list-master-izin-belajar'); ?>"><i class="fa fa-circle-o"></i> Form Izin Belajar</a></li>
-                            <li><a href="?<?php echo paramEncrypt('module=master-data&act=list-master-grade'); ?>"><i class="fa fa-circle-o"></i> Grade Jabatan</a></li>
+                            <!-- <li><a href="?<?php echo paramEncrypt('module=master-data&act=list-master-izin-belajar'); ?>"><i class="fa fa-circle-o"></i> Form Izin Belajar</a></li> -->
+                            <!-- <li><a href="?<?php echo paramEncrypt('module=master-data&act=list-master-grade'); ?>"><i class="fa fa-circle-o"></i> Grade Jabatan</a></li> -->
                         </ul>
-                    </li> -->
+                    </li>
                     <li class="treeview">
                         <a href="#"><i class="fa fa-database"></i> Master Data
                             <span class="pull-right-container">
